@@ -1,4 +1,4 @@
-# twlight
+# puppet-twlight
 
 #### Table of Contents
 
@@ -15,9 +15,8 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+This puppet module deploys and configures The Wikipedia Library Card Platform app to Debian 8 systems.
+It is a work in progress.
 
 ## Module Description
 
