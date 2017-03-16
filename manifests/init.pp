@@ -1,124 +1,60 @@
-class twlight {
-  
-  # execute 'apt-get update'
-  exec { 'apt-update':                    # exec resource named 'apt-update'
-    command => '/usr/bin/apt-get update'  # command this resource will run
-  }
-  
-  # Some puppet modules require encrypted repos.
-  package { 'apt-transport-https':
-    require => Exec['apt-update'],        # require 'apt-update' before installing
-    ensure => installed,
-  }
-  
-  # install TWLight system dependencies
-  
-  package { 'build-essential':
-    require => Exec['apt-update'],        # require 'apt-update' before installing
-    ensure => installed,
-  }
-  
-  package { 'git':
-    require => Exec['apt-update'],        # require 'apt-update' before installing
-    ensure => installed,
-  }
-  
-  package { 'libmysqlclient-dev':
-    require => Exec['apt-update'],        # require 'apt-update' before installing
-    ensure => installed,
-  }
-  
-  #package { 'mariadb-server':
-  #  require => Exec['apt-update'],        # require 'apt-update' before installing
-  #  ensure => installed,
-  #}
-  
-  #package { 'nginx':
-  #  require => Exec['apt-update'],        # require 'apt-update' before installing
-  #  ensure => installed,
-  #}
-  
-  package { 'python-dev':
-    require => Exec['apt-update'],        # require 'apt-update' before installing
-    ensure => installed,
-  }
-  
-  package { 'python-pip':
-    require => Exec['apt-update'],        # require 'apt-update' before installing
-    ensure => installed,
-  }
-  
-  # Install mariadb server
-  class {'::mysql::server':
-    package_name => 'mariadb-server',
-    root_password           => $mysqlroot,
-    remove_default_accounts => true,
-  }
-  
-  # Install mariadb client
-  class {'::mysql::client':
-    package_name => 'mariadb-client',
-  }
-  
-  # Check mtime on tzdata
-  file { '/usr/share/zoneinfo':
-    audit => mtime,
-    recurse => true,
-    notify => Exec['mysql_tzinfo']
-  }
-  
-  # Load timezone tables into mysql on refresh
-  exec { 'mysql_tzinfo':
-    refreshonly => true,
-    command => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=$mysqlroot mysql",
-  }
-  
-  # Create twlight database
-  # CREATE DATABASE twlight CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
-  # GRANT ALL PRIVILEGES on twlight.* to twlight@'localhost' IDENTIFIED BY '<password>';
-  mysql::db { 'twlight':
-    user     => 'twlight',
-    password => $mysqltwlight,
-    host     => 'localhost',
-    charset => 'utf8mb4',
-    collate => 'utf8mb4_general_ci',
-    grant    => ['ALL'],
-  }
-  
-  # Install nginx
-  class { 'nginx': }
-  
-  # www dir
-  file { '/var/www':
-    ensure => 'directory',
-    owner  => '33',
-    group  => '33',
-    mode   => '755',
-  }
-  
-  # www/html dir
-  file { '/var/www/html':
-    ensure => 'directory',
-    owner  => '33',
-    group  => '33',
-    mode   => '755',
-  }
-  
-  vcsrepo { '/var/www/html/TWLight':
-    ensure   => present,
-    provider => git,
-    source   => 'https://github.com/WikipediaLibrary/TWLight.git',
-  }
-  
-  file { '/var/www/html/TWLight/TWLight/settings/production_vars.py':
-    ensure  => file,
-    content => template('twlight/production_vars.py.erb'),
-    owner  => '33',
-    group  => '33',
-    mode   => '444',
-  }
-  
-  #nginx::resource::server { 'debian-8':
-  #  www_root => '/var/www/www.puppetlabs.com',
-  #}
+# == Class: twlight
+#
+# Full description of class twlight here.
+#
+# === Parameters
+#
+# Document parameters here.
+#
+# [*sample_parameter*]
+#   Explanation of what this parameter affects and what it defaults to.
+#   e.g. "Specify one or more upstream twlight servers as an array."
+#
+# === Variables
+#
+# Here you should define a list of variables that this module would require.
+#
+# [*sample_variable*]
+#   Explanation of how this variable affects the funtion of this class and if
+#   it has a default. e.g. "The parameter enc_twlight_servers must be set by the
+#   External Node Classifier as a comma separated list of hostnames." (Note,
+#   global variables should be avoided in favor of class parameters as
+#   of Puppet 2.6.)
+#
+# === Examples
+#
+#  class { 'twlight':
+#    servers => [ 'pool.twlight.org', 'twlight.local.company.com' ],
+#  }
+#
+# === Authors
+#
+# Author Name <author@domain.com>
+#
+# === Copyright
+#
+# Copyright 2017 Your name here, unless otherwise noted.
+#
+class twlight (
+  $package_manage = $twlight::params::package_manage,
+  $package_ensure = $twlight::params::package_ensure,
+  $package_name = $twlight::params::package_name,
+) inherits twlight::params {
+
+  validate_bool($package_manage)
+  validate_string($package_ensure)
+  validate_array($package_name)
+
+  include 'nginx'
+ 
+  # Anchor this as per #8040 - this ensures that classes won't float off and
+  # mess everything up.  You can read about this at:
+  # http://docs.puppetlabs.com/puppet/2.7/reference/lang_containment.html#known-issues
+  anchor { 'twlight::begin': } ->
+  class { '::twlight::install': } ->
+  class { '::twlight::configsys': } ->
+  class { '::twlight::fetch': } ->
+  class { '::twlight::configapp': } ->
+  anchor { 'twlight::end': }
 }
+
