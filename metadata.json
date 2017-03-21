@@ -1,9 +1,9 @@
 {
-  "name": "wikipedialibrary-twlight",
-  "version": "0.1.0",
+  "name": "jsnshrmn-twlight",
+  "version": "0.1.2",
   "author": "jsnshrmn",
   "summary": "Puppet TWLight management module.",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/WikipediaLibrary/puppet-twlight",
   "project_page": "https://github.com/WikipediaLibrary/puppet-twlight",
   "issues_url": "https://github.com/WikipediaLibrary/puppet-twlight/issues",
@@ -16,10 +16,10 @@
     }
   ],
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
-    {"name":"puppetlabs-mysql","version_requirement":">= 3.10.0"},
-    {"name":"puppetlabs-vcsrepo","version_requirement":">= 1.5.0"},
-    {"name":"puppet-nginx","version_requirement":">= 0.6.0"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 4.15.0  < 5.0.0"},
+    {"name":"puppetlabs-mysql","version_requirement":">= 3.10.0 < 4.0.0"},
+    {"name":"puppetlabs-vcsrepo","version_requirement":">= 1.5.0 < 2.0.0"},
+    {"name":"puppet-nginx","version_requirement":">= 0.6.0 < 2.0.0"}
   ]
 }
 
