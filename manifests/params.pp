@@ -2,7 +2,7 @@ class twlight::params {
 
   $package_manage = true
   $package_ensure = 'present'
-  
+
   $default_package_name = [
   'apt-transport-https',
   'build-essential',
