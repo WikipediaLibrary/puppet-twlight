@@ -21,6 +21,16 @@ class twlight::configsys inherits twlight {
     command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=${mysqlroot} mysql",
   }
 
+  # Restart gunicorn
+  exec { 'gunicorn_restart':
+    command     => "/etc/init.d/gunicorn start"
+  }
+
+  # Reload nginx
+  exec { 'nginx_reload':
+    command     => "/usr/sbin/nginx -t && /bin/systemctl reload nginx"
+  }
+
   # config mariadb server using another module
   class {'::mysql::server':
     package_manage          => false,
@@ -67,6 +77,7 @@ class twlight::configsys inherits twlight {
     owner => '33',
     group => '33',
     source => 'puppet:///modules/twlight/nginx.conf.webserver',
+    notify  => Exec['nginx_reload']
   }
 
   # gunicorn config
@@ -75,6 +86,7 @@ class twlight::configsys inherits twlight {
     owner => 'root',
     group => 'root',
     content => template('twlight/gunicorn.erb'),
+    notify  => Exec['gunicorn_restart']
   }
 
   # gunicorn start on boot
