@@ -68,4 +68,20 @@ class twlight::configsys inherits twlight {
     group => '33',
     source => 'puppet:///modules/twlight/nginx.conf.webserver',
   }
+
+  # gunicorn config
+  file {'/etc/init.d/gunicorn':
+    mode => "0755",
+    owner => 'root',
+    group => 'root',
+    source => 'puppet:///modules/twlight/gunicorn',
+  }
+
+  # gunicorn start on boot
+  file { '/etc/rc3.d/S05gunicorn':
+    ensure  => 'link',
+    target  => '/etc/init.d/gunicorn',
+    force   => true,
+  }
+
 }

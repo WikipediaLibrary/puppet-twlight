@@ -14,6 +14,17 @@ class twlight::configapp inherits twlight {
     force   => true,
   }
 
+  # TWLight app log
+  file { '/var/www/html/TWLight/TWLight/logs/twlight.log':
+    ensure  => file
+  }
+
+  # Gunicorn server log
+  file { '/var/www/html/TWLight/TWLight/logs/gunicorn.log':
+    ensure  => file
+  }
+
+  # Set perms for TWLight tree
   file { '/var/www/html/TWLight':
     ensure  => directory,
     recurse => true,
