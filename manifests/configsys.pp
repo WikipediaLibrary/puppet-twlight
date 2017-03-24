@@ -13,6 +13,18 @@ class twlight::configsys inherits twlight {
     command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=${mysqlroot} mysql",
   }
 
+  # config mariadb server using another module
+  class {'::mysql::server':
+    package_manage          => false,
+    service_name            => 'mysql',
+    root_password           => $mysqlroot,
+    remove_default_accounts => true
+  }
+
+  class {'::mysql::client':
+    package_manage          => false,
+  }
+
   # Create twlight database
   # CREATE DATABASE twlight CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
   # GRANT ALL PRIVILEGES on twlight.* to twlight@'localhost' IDENTIFIED BY '<password>';

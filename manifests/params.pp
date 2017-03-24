@@ -8,6 +8,9 @@ class twlight::params {
   'build-essential',
   'git',
   'libmysqlclient-dev',
+  'mariadb-client',
+  'mariadb-server',
+  'nginx',
   'python-dev',
   'python-pip'
   ]
