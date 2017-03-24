@@ -13,7 +13,7 @@
 
 dir="/var/www/html/TWLight/bin/"
 cmd="./gunicorn_start.sh"
-user="twlight"
+user="<%= @twlight_unixname %>"
 
 name=`basename $0`
 pid_file="/var/run/$name.pid"

@@ -1,10 +1,10 @@
 class twlight::configsys inherits twlight {
 
   # Create user to execute virtual environment and gunicorn
-  user { "twlight":
+  user { $twlight_unixname:
     ensure     => present,
-    comment    => "twlight user",
-    shell      => "/bin/bash",
+    comment    => 'twlight user',
+    shell      => '/bin/bash',
     managehome => true,
   }
 
@@ -74,7 +74,7 @@ class twlight::configsys inherits twlight {
     mode => "0755",
     owner => 'root',
     group => 'root',
-    source => 'puppet:///modules/twlight/gunicorn',
+    content => template('twlight/gunicorn.erb'),
   }
 
   # gunicorn start on boot
