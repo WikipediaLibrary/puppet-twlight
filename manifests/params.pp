@@ -12,7 +12,7 @@ class twlight::params {
   'mariadb-server',
   'nginx',
   'python-dev',
-  'python-pip'
+  'python-pip',
   ]
 
   case $::osfamily {

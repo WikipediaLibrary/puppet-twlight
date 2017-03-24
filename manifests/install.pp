@@ -1,8 +1,14 @@
 class twlight::install inherits twlight {
 
   # execute 'apt-get update'
-  exec { 'apt-update':                    # exec resource named 'apt-update'
-    command => '/usr/bin/apt-get update'  # command this resource will run
+  exec { 'apt-update':
+    command => '/usr/bin/apt-get update',
+    notify  =>Exec['virtualenv_install']
+  }
+
+  # Pip install virtualenv
+  exec { 'virtualenv_install':
+    command     => "/usr/bin/pip install virtualenv"
   }
 
   # Install our packages
@@ -12,4 +18,5 @@ class twlight::install inherits twlight {
       require => Exec['apt-update']
     }
   }
+
 }

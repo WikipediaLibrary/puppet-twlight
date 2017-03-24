@@ -1,5 +1,17 @@
 class twlight::configapp inherits twlight {
 
+  # Start gunicorn
+  exec { 'gunicorn_start':
+    command     => "/etc/init.d/gunicorn start"
+  }
+
+  # Configure virtual environment
+  exec { 'virtualenv_init':
+    command     => "./virtualenv_init.sh",
+    path        => "/home/$twlight_unixname",
+    user        => $twlight_unixname
+  }
+
   file { '/etc/nginx/sites-available/twlight':
     ensure  => file,
     content => template('twlight/nginx.conf.twlight.erb'),
@@ -16,12 +28,18 @@ class twlight::configapp inherits twlight {
 
   # TWLight app log
   file { '/var/www/html/TWLight/TWLight/logs/twlight.log':
-    ensure  => file
+    ensure  => file,
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0644'
   }
 
   # Gunicorn server log
   file { '/var/www/html/TWLight/TWLight/logs/gunicorn.log':
-    ensure  => file
+    ensure  => file,
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0644'
   }
 
   # Set perms for TWLight tree
@@ -39,4 +57,30 @@ class twlight::configapp inherits twlight {
     group   => $twlight_unixname,
     mode    => '0400',
   }
+
+  # Virtualenv bootstrap script
+  file {"/home/$twlight_unixname/virtualenv_init.sh":
+    mode => "0755",
+    owner => $twlight_unixname,
+    group => $twlight_unixname,
+    content => template('twlight/virtualenv_init.sh.erb'),
+    notify  => Exec['virtualenv_init']
+  }
+
+  # gunicorn config
+  file {'/etc/init.d/gunicorn':
+    mode => "0755",
+    owner => 'root',
+    group => 'root',
+    content => template('twlight/gunicorn.erb'),
+  }
+
+  # gunicorn start on boot
+  file { '/etc/rc3.d/S05gunicorn':
+    ensure  => 'link',
+    target  => '/etc/init.d/gunicorn',
+    force   => true,
+    notify  => Exec['gunicorn_start']
+  }
+
 }
