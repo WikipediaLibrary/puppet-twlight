@@ -1,5 +1,13 @@
 class twlight::configsys inherits twlight {
 
+  # Create user to execute virtual environment and gunicorn
+  user { "twlight":
+    ensure     => present,
+    comment    => "twlight user",
+    shell      => "/bin/bash",
+    managehome => true,
+  }
+
   # Check mtime on tzdata
   file { '/usr/share/zoneinfo':
     audit   => mtime,
@@ -51,5 +59,13 @@ class twlight::configsys inherits twlight {
     owner  => '33',
     group  => '33',
     mode   => '0755',
+  }
+
+  # nginx config
+  file {'/etc/nginx/nginx.conf':
+    mode => "0644",
+    owner => '33',
+    group => '33',
+    source => 'puppet:///modules/twlight/nginx.conf.webserver',
   }
 }

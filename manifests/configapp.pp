@@ -14,11 +14,19 @@ class twlight::configapp inherits twlight {
     force   => true,
   }
 
+  file { '/var/www/html/TWLight':
+    ensure  => directory,
+    recurse => true,
+    owner   => 'twlight',
+    group   => 'twlight',
+    mode    => '0644',
+  }
+
   file { '/var/www/html/TWLight/TWLight/settings/production_vars.py':
     ensure  => file,
     content => template('twlight/production_vars.py.erb'),
-    owner   => '33',
-    group   => '33',
-    mode    => '0444',
+    owner   => 'twlight',
+    group   => 'twlight',
+    mode    => '0400',
   }
 }
