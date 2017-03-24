@@ -7,8 +7,7 @@ class twlight::configapp inherits twlight {
 
   # Configure virtual environment
   exec { 'virtualenv_init':
-    command     => "./virtualenv_init.sh",
-    path        => "/home/$twlight_unixname",
+    command     => "/bin/bash /home/$twlight_unixname/virtualenv_init.sh || :",
     user        => $twlight_unixname
   }
 
