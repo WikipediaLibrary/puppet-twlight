@@ -57,6 +57,14 @@ class twlight::configapp inherits twlight {
     mode    => '0400',
   }
 
+  file { '/var/www/html/TWLight/TWLight/settings/vagrant_vars.py':
+    ensure  => file,
+    content => template('twlight/vagrant_vars.py.erb'),
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0400',
+  }
+
   # Virtualenv bootstrap script
   file {"/home/$twlight_unixname/virtualenv_init.sh":
     mode => "0755",
