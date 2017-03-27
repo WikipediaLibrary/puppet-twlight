@@ -5,8 +5,16 @@ virtualenv TWLight
 source /home/<%= @twlight_unixname %>/TWLight/bin/activate
 pip install -r /var/www/html/TWLight/requirements/wmf.txt
 cd /var/www/html/TWLight
+echo "syncdb"
 python manage.py syncdb
-# Fake success on migrate until we get bug worked out
+echo "migrate"
 python manage.py migrate
+echo "createinitialrevisions"
 python manage.py createinitialrevisions
+echo "collectstatic --noinput"
 python manage.py collectstatic --noinput
+# Perform any missing migrations
+echo "makemigrations"
+python manage.py makemigrations
+echo "migrate"
+python manage.py migrate

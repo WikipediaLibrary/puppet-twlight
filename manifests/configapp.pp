@@ -7,7 +7,7 @@ class twlight::configapp inherits twlight {
 
   # Configure virtual environment
   exec { 'virtualenv_init':
-    command     => "/bin/bash /home/$twlight_unixname/virtualenv_init.sh || :",
+    command     => "/bin/bash /home/$twlight_unixname/virtualenv_init.sh > /home/$twlight_unixname/virtualenv_init.log || :",
     user        => $twlight_unixname
   }
 
@@ -75,7 +75,7 @@ class twlight::configapp inherits twlight {
   }
 
 
-  file { '/var/www/html/TWLight/TWLight/bin/gunicorn_start.sh':
+  file { '/var/www/html/TWLight/bin/gunicorn_start.sh':
     ensure  => file,
     content => template('twlight/gunicorn_start.sh.erb'),
     owner   => $twlight_unixname,
