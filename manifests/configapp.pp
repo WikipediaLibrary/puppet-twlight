@@ -74,6 +74,16 @@ class twlight::configapp inherits twlight {
     notify  => Exec['virtualenv_init']
   }
 
+
+  file { '/var/www/html/TWLight/TWLight/bin/gunicorn_start.sh':
+    ensure  => file,
+    content => template('twlight/gunicorn_start.sh.erb'),
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0755',
+  }
+
+
   # gunicorn config
   file {'/etc/init.d/gunicorn':
     mode => "0755",
