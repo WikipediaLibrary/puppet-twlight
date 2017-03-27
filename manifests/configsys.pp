@@ -45,8 +45,8 @@ class twlight::configsys inherits twlight {
     user     => 'twlight',
     password => $mysqltwlight,
     host     => 'localhost',
-    charset  => 'utf8mb4',
-    collate  => 'utf8mb4_general_ci',
+#    charset  => 'utf8mb4',
+#    collate  => 'utf8mb4_general_ci',
     grant    => ['ALL'],
   }
 
