@@ -2,7 +2,7 @@ class twlight::handler inherits twlight {
 
   # Import DB Dump if available
   exec { 'mysql_import':
-    command     => "/usr/bin/mysql -u twlight -p${mysqltwlight} -D twlight < ${twlight_mysqlimport}",
+    command     => "/usr/bin/mysql -u twlight -p${twlight_mysqltwlight_pw} -D twlight < ${twlight_mysqlimport}",
     logoutput   => true,
     onlyif      => "/usr/bin/stat ${twlight_mysqlimport}",
   }

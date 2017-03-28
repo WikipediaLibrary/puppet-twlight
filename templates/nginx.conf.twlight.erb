@@ -5,7 +5,7 @@ upstream appserver {
 server {
     listen 443;
     listen [::]:443;
-    server_name <%= @twlightservername %>;
+    server_name <%= @twlight_servername %>;
     root /var/www/html/TWLight/;
     client_max_body_size 4G;
 

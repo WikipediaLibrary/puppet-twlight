@@ -18,14 +18,14 @@ class twlight::configsys inherits twlight {
   # Load timezone tables into mysql on refresh
   exec { 'mysql_tzinfo':
     refreshonly => true,
-    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=${mysqlroot} mysql",
+    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=${twlight_mysqlroot_pw} mysql",
   }
 
   # config mariadb server using another module
   class {'::mysql::server':
     package_manage          => false,
     service_name            => 'mysql',
-    root_password           => $mysqlroot,
+    root_password           => $twlight_mysqlroot_pw,
     remove_default_accounts => true
   }
 
@@ -38,7 +38,7 @@ class twlight::configsys inherits twlight {
   # GRANT ALL PRIVILEGES on twlight.* to twlight@'localhost' IDENTIFIED BY '<password>';
   mysql::db { 'twlight':
     user     => 'twlight',
-    password => $mysqltwlight,
+    password => $twlight_mysqltwlight_pw,
     host     => 'localhost',
 #    charset  => 'utf8mb4',
 #    collate  => 'utf8mb4_general_ci',
