@@ -15,18 +15,20 @@
 
 ## Overview
 
-This puppet module deploys and configures The Wikipedia Library Card Platform app to Debian 8 systems.
+This puppet module deploys and configures the [Library Card Platform for The Wikipedia Library](https://github.com/WikipediaLibrary/TWLight) to Debian 8 systems.
 It is a work in progress.
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
+As it stands, this module is somewhat amature attempt to puppetize TWLight.
+It does the following sorts of things:
+ * directly installs and configures packages
+ * checks stuff out from git
+ * runs dumb shell scripts to manage django
+ * writes secrets to files
 
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+You probably only want to use this if you are developing or operating TWLight.
+
 
 ## Setup
 
@@ -44,11 +46,7 @@ etc.), mention it here.
 
 ### Beginning with twlight
 
-The very basic steps needed for a user to get the module up and running.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+Give [twlight_vagrant](https://github.com/WikipediaLibrary/twlight_vagrant) a go
 
 ## Usage
 
