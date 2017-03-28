@@ -4,7 +4,7 @@ class twlight::configapp inherits twlight {
   exec { 'daemon_reload':
     command     => "/bin/systemctl daemon-reload",
     subscribe => [ File["/var/www/html/TWLight/TWLight/settings/${twlight_environment}_vars.py"], File["/etc/rc3.d/S05gunicorn"] ],
-    notify => Exec['nginx_reload','gunicorn_start'],
+    notify => Exec['nginx_reload'],
   }
 
   # Configure virtual environment
@@ -51,17 +51,9 @@ class twlight::configapp inherits twlight {
     group   => $twlight_unixname,
   }
 
-  file { '/var/www/html/TWLight/TWLight/settings/production_vars.py':
+  file { "/var/www/html/TWLight/TWLight/settings/${twlight_environment}_vars.py":
     ensure  => file,
-    content => template('twlight/production_vars.py.erb'),
-    owner   => $twlight_unixname,
-    group   => $twlight_unixname,
-    mode    => '0400',
-  }
-
-  file { '/var/www/html/TWLight/TWLight/settings/vagrant_vars.py':
-    ensure  => file,
-    content => template('twlight/vagrant_vars.py.erb'),
+    content => template("twlight/${twlight_environment}_vars.py.erb"),
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
     mode    => '0400',
