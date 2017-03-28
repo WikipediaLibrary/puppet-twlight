@@ -8,7 +8,7 @@ class twlight::install inherits twlight {
 
   # Pip install virtualenv
   exec { 'virtualenv_install':
-    command     => "/usr/bin/pip install virtualenv"
+    command     => '/usr/bin/pip install virtualenv'
   }
 
   # Install our packages

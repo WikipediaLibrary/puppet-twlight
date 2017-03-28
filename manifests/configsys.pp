@@ -63,11 +63,11 @@ class twlight::configsys inherits twlight {
 
   # nginx config
   file {'/etc/nginx/nginx.conf':
-    mode => "0644",
-    owner => '33',
-    group => '33',
+    mode   => '0644',
+    owner  => '33',
+    group  => '33',
     source => 'puppet:///modules/twlight/nginx.conf.webserver',
-    notify  => Exec['nginx_reload']
+    notify => Exec['nginx_reload']
   }
 
 }
