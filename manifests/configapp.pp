@@ -1,14 +1,16 @@
 class twlight::configapp inherits twlight {
 
-  # Start gunicorn
-  exec { 'gunicorn_start':
-    command     => "/etc/init.d/gunicorn start"
+  # reload systemd
+  exec { 'daemon_reload':
+    command     => "/bin/systemctl daemon-reload",
+    subscribe => [ File["/var/www/html/TWLight/TWLight/settings/${twlight_environment}_vars.py"], File["/etc/rc3.d/S05gunicorn"] ],
+    notify => Exec['nginx_reload','gunicorn_start'],
   }
 
   # Configure virtual environment
   exec { 'virtualenv_init':
-    command     => "/bin/bash /home/$twlight_unixname/virtualenv_init.sh > /home/$twlight_unixname/virtualenv_init.log || :",
-    user        => $twlight_unixname
+    command     => "/bin/bash /home/$twlight_unixname/virtualenv_init.sh &> /home/$twlight_unixname/virtualenv_init.log || :",
+    user        => $twlight_unixname,
   }
 
   file { '/etc/nginx/sites-available/twlight':
@@ -30,7 +32,7 @@ class twlight::configapp inherits twlight {
     ensure  => file,
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
-    mode    => '0644'
+    mode    => '0644',
   }
 
   # Gunicorn server log
@@ -38,7 +40,7 @@ class twlight::configapp inherits twlight {
     ensure  => file,
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
-    mode    => '0644'
+    mode    => '0644',
   }
 
   # Set perms for TWLight tree
@@ -97,7 +99,6 @@ class twlight::configapp inherits twlight {
     ensure  => 'link',
     target  => '/etc/init.d/gunicorn',
     force   => true,
-    notify  => Exec['gunicorn_start']
   }
 
 }

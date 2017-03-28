@@ -21,11 +21,6 @@ class twlight::configsys inherits twlight {
     command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=${mysqlroot} mysql",
   }
 
-  # Reload nginx
-  exec { 'nginx_reload':
-    command     => "/usr/sbin/nginx -t && /bin/systemctl reload nginx"
-  }
-
   # config mariadb server using another module
   class {'::mysql::server':
     package_manage          => false,

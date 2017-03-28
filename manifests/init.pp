@@ -53,6 +53,7 @@ class twlight (
   class { '::twlight::configsys': } ->
   class { '::twlight::fetch': } ->
   class { '::twlight::configapp': } ->
+  class { '::twlight::handler': } ->
   anchor { 'twlight::end': }
 }
 

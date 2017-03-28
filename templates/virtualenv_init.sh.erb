@@ -5,8 +5,6 @@ virtualenv TWLight
 source /home/<%= @twlight_unixname %>/TWLight/bin/activate
 pip install -r /var/www/html/TWLight/requirements/wmf.txt
 cd /var/www/html/TWLight
-echo "syncdb"
-python manage.py syncdb
 echo "migrate"
 python manage.py migrate
 echo "createinitialrevisions"

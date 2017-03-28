@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 # Thanks to https://github.com/fhd/init-script-template.
-
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:$PATH
 dir="/var/www/html/TWLight/bin/"
 cmd="./gunicorn_start.sh"
 user="<%= @twlight_unixname %>"
