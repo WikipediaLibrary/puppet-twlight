@@ -1,12 +1,12 @@
 {
   "name": "jsnshrmn-twlight",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "jsnshrmn",
   "summary": "Puppet TWLight management module.",
   "license": "Apache-2.0",
-  "source": "https://github.com/WikipediaLibrary/puppet-twlight",
-  "project_page": "https://github.com/WikipediaLibrary/puppet-twlight",
-  "issues_url": "https://github.com/WikipediaLibrary/puppet-twlight/issues",
+  "source": "https://github.com/WikipediaLibrary/twlight_puppet",
+  "project_page": "https://github.com/WikipediaLibrary/twlight_puppet",
+  "issues_url": "https://github.com/WikipediaLibrary/twlight_puppet/issues",
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
