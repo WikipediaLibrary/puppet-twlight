@@ -1,15 +1,23 @@
 class twlight::handler inherits twlight {
 
+  # Import DB Dump if available
+  exec { 'mysql_import':
+    command     => "/usr/bin/mysql -u twlight -p${mysqltwlight} -D twlight < ${twlight_mysqlimport}",
+    logoutput   => true,
+    onlyif      => "/usr/bin/stat ${twlight_mysqlimport}",
+  }
+
   # Reload nginx
   exec { 'nginx_reload':
     command     => "/usr/sbin/nginx -t && /bin/systemctl reload nginx",
     refreshonly => true,
   }
 
-  # Init gunicorn
+  # Start gunicorn
+  # 30 second delay is a kludge that made gunicorn worky, at least in vagrant
   exec { 'gunicorn_start':
-    command     => "/var/www/html/TWLight/bin/gunicorn_start.sh >>/var/log/gunicorn.log 2>>/var/log/gunicorn.err &",
-    creates     => "/var/www/html/TWLight/run/gunicorn.sock"
+    command     => "/bin/bash -c '/bin/sleep 30 && /bin/systemctl start gunicorn' &",
+    unless      => '/usr/bin/stat /var/www/html/TWLight/run/gunicorn.sock',
   }
 
 }
