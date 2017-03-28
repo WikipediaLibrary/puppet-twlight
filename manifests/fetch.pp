@@ -4,7 +4,7 @@ class twlight::fetch inherits twlight {
     ensure   => present,
     provider => git,
     source   => 'https://github.com/WikipediaLibrary/TWLight.git',
-    revision => 'dev-vagrantsupport',
+    revision => $twlight_git_revision,
   }
 
 }
