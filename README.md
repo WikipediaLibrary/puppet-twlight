@@ -1,4 +1,4 @@
-# puppet-twlight
+# twlight_puppet
 
 #### Table of Contents
 
