@@ -11,6 +11,7 @@ class twlight::params {
   'mariadb-client',
   'mariadb-server',
   'nginx',
+  'pandoc',
   'python-dev',
   'python-pip',
   ]
