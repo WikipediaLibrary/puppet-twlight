@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
+
+dom=$(date -d "$D" '+%d')
+
+twlight_mysqldumpdir=<%= @twlight_mysqldumpdir %>
+twlight_mysqlhost=host
+twlight_mysqldb=twlight
+twlight_mysqluser=twlight
+twlight_mysqlpass=$(cat /var/www/html/TWLight/TWLight/settings/<%= @twlight_environment %>_vars.py | grep ^MYSQL_PASSWORD | cut -d "=" -f 2 | xargs)
+
+echo "Dumping TWLight database"
+
+## Perform sql-dump
+sudo -u <%= @twlight_unixname %> bash -c "mysqldump -h ${twlight_mysqlhost} -u ${twlight_mysqluser} -p${twlight_mysqlpass} ${twlight_mysqldb} > ${twlight_mysqldumpdir}/twlight_${dom}.sql"
+
+echo "Finished dumping TWLight database."

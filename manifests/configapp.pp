@@ -68,6 +68,14 @@ class twlight::configapp inherits twlight {
     notify  => Exec['virtualenv_init']
   }
 
+  # mysql dump script
+  file {"/etc/cron.daily/twlight-mysqldump":
+    mode    => '0755',
+    owner   => root,
+    group   => root,
+    content => template('twlight/twlight_mysqldump.sh.erb'),
+  }
+
 
   file { '/var/www/html/TWLight/bin/gunicorn_start.sh':
     ensure  => file,
