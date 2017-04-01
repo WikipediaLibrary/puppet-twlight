@@ -14,9 +14,9 @@ class twlight::handler inherits twlight {
   }
 
   # Start gunicorn
-  # 30 second delay is a kludge that made gunicorn worky, at least in vagrant
+  # 60 second delay is a kludge that made gunicorn worky, at least in vagrant
   exec { 'gunicorn_start':
-    command => "/bin/bash -c '/bin/sleep 30 && /bin/systemctl start gunicorn' &",
+    command => "/bin/bash -c '/bin/sleep 60 && /bin/systemctl start gunicorn' &",
     unless  => '/usr/bin/stat /var/www/html/TWLight/run/gunicorn.sock',
   }
 
