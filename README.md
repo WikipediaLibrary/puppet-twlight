@@ -34,10 +34,10 @@ You probably only want to use this if you are developing or operating TWLight.
 
 ### What twlight affects
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
+The initial goal of this module is to install and configure TWLight as described in the project [Sysadmin docs](https://github.com/WikipediaLibrary/TWLight/blob/master/docs/sysadmin.md). Most of that doc content will get migrated here. Beyond that, this module
+* Runs any uncommitted django migrations
+* Imports a db dump if one exists at the specified location
+* Adds a daily mysql dump cron job
 
 ### Setup Requirements **OPTIONAL**
 
@@ -62,7 +62,7 @@ with things. (We are working on automating this section!)
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Debian 8 only
 
 ## Development
 
