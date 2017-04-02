@@ -50,8 +50,11 @@ Give [twlight_vagrant](https://github.com/WikipediaLibrary/twlight_vagrant) a go
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+
+The classes, types, and resources for customizing, configuring, and doing
+the fancy stuff with this module are all shifting around rapidly since it's very
+immature.  Check out the default manifest in the vagrant environment for now.
+
 
 ## Reference
 
