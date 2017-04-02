@@ -15,4 +15,7 @@ echo "Dumping TWLight database"
 ## Perform sql-dump
 bash -c "mysqldump -h '${twlight_mysqlhost}' -u '${twlight_mysqluser}' -p'${twlight_mysqlpass}' '${twlight_mysqldb}' > '${twlight_mysqldumpdir}/twlight_${dom}.sql'"
 
+## Root only
+chmod 0600 "${twlight_mysqldumpdir}/twlight_${dom}.sql"
+
 echo "Finished dumping TWLight database."
