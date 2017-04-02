@@ -13,6 +13,6 @@ twlight_mysqlpass=$(cat /var/www/html/TWLight/TWLight/settings/<%= @twlight_envi
 echo "Dumping TWLight database"
 
 ## Perform sql-dump
-sudo -u <%= @twlight_unixname %> bash -c "mysqldump -h ${twlight_mysqlhost} -u ${twlight_mysqluser} -p${twlight_mysqlpass} ${twlight_mysqldb} > ${twlight_mysqldumpdir}/twlight_${dom}.sql"
+bash -c "mysqldump -h '${twlight_mysqlhost}' -u '${twlight_mysqluser}' -p'${twlight_mysqlpass}' '${twlight_mysqldb}' > '${twlight_mysqldumpdir}/twlight_${dom}.sql'"
 
 echo "Finished dumping TWLight database."
