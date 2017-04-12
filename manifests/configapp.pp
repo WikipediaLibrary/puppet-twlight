@@ -68,6 +68,14 @@ class twlight::configapp inherits twlight {
     notify  => Exec['virtualenv_init']
   }
 
+  # Virtualenv clear static script
+  file {"/home/${twlight_unixname}/virtualenv_clearstatic.sh":
+    mode    => '0755',
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    content => template('twlight/virtualenv_clearstatic.sh.erb'),
+  }
+
   # mysql dump script
   file {"/etc/cron.daily/twlight-mysqldump":
     mode    => '0755',
