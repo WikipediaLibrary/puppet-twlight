@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Bail if gunicorn is running
+systemctl is-active gunicorn >/dev/null 2>&1 && exit 1;
+
+# Fetch latest code from master
+cd /var/www/html/TWLight
+git pull origin master
+
+# Update Django
+source /home/<%= @twlight_unixname %>/TWLight/bin/activate
+export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
+pip install -r /var/www/html/TWLight/requirements/wmf.txt
+echo "migrate"
+python manage.py migrate
+echo "collectstatic --noinput"
+python manage.py collectstatic --noinput
