@@ -8,18 +8,30 @@ server {
     server_name <%= @twlight_servername %>;
     root /var/www/html/TWLight/;
     client_max_body_size 4G;
+    proxy_intercept_errors on;
+
+
+    location /500-dog.jpeg {
+        root /var/www/html/TWLight/TWLight/templates/500/;
+    }
+
+    location /500-Wikipedia_Library_owl.svg {
+        root /var/www/html/TWLight/TWLight/templates/500/;
+    }
+
+    location ~ .+/((500-Wikipedia_Library_owl\.svg)|(500-dog\.jpeg))$ {
+        try_files $uri /$1;
+    }
+
+    error_page 500 502 503 504 /500.html;
+    location /500.html {
+        internal;
+        root /var/www/html/TWLight/TWLight/templates/500/;
+    }
 
     location /static/ {
         # checks for static file, if not found proxy to app
         alias /var/www/html/TWLight/TWLight/collectedstatic/;
-    }
-
-    location / {
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-        proxy_redirect off;
-
-        proxy_pass   http://appserver;
     }
 
     location /admin {
@@ -31,16 +43,12 @@ server {
         proxy_pass   http://appserver;
     }
 
-    error_page 500 502 503 504 /500.html;
-    location /500.html {
-        root /var/www/html/TWLight/TWLight/templates/500/;
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+
+        proxy_pass   http://appserver;
     }
 
-    location /500-dog.jpeg {
-        root /var/www/html/TWLight/TWLight/templates/500/;
-    }
-
-    location /500-Wikipedia_Library_owl.svg {
-        root /var/www/html/TWLight/TWLight/templates/500/;
-    }
 }
