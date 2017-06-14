@@ -13,5 +13,8 @@ export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
 pip install -r /var/www/html/TWLight/requirements/wmf.txt
 echo "migrate"
 python manage.py migrate
+# Compile translations
+echo "compilemessages"
+python manage.py compilemessages
 echo "collectstatic --noinput"
 python manage.py collectstatic --noinput

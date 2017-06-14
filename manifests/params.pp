@@ -6,6 +6,7 @@ class twlight::params {
   $default_package_name = [
   'apt-transport-https',
   'build-essential',
+  'gettext',
   'git',
   'libmysqlclient-dev',
   'mariadb-client',
