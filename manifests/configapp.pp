@@ -68,6 +68,14 @@ class twlight::configapp inherits twlight {
     notify  => Exec['virtualenv_init']
   }
 
+  # Virtualenv update script
+  file {"/home/${twlight_unixname}/virtualenv_update.sh":
+    mode    => '0755',
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    content => template('twlight/virtualenv_update.sh.erb'),
+  }
+
   # Virtualenv clear static script
   file {"/home/${twlight_unixname}/virtualenv_clearstatic.sh":
     mode    => '0755',
@@ -84,7 +92,16 @@ class twlight::configapp inherits twlight {
     content => template('twlight/twlight_mysqldump.sh.erb'),
   }
 
+  # TWLight git pull wrapper script
+  file { '/var/www/html/TWLight/bin/twlight_update_code.sh':
+    ensure  => file,
+    content => template('twlight/twlight_update_code.sh.erb'),
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0755',
+  }
 
+  # gunicorn start script
   file { '/var/www/html/TWLight/bin/gunicorn_start.sh':
     ensure  => file,
     content => template('twlight/gunicorn_start.sh.erb'),
@@ -92,7 +109,6 @@ class twlight::configapp inherits twlight {
     group   => $twlight_unixname,
     mode    => '0755',
   }
-
 
   # gunicorn config
   file {'/etc/init.d/gunicorn':

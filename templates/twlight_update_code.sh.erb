@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+sudo systemctl stop gunicorn
+sudo su <%= @twlight_unixname %> /home/www/virtualenv_update.sh
+sudo systemctl start gunicorn

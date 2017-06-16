@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Bail if gunicorn is running
+systemctl is-active gunicorn >/dev/null 2>&1 && exit 1;
+
 cd /home/<%= @twlight_unixname %>
 virtualenv TWLight
 source /home/<%= @twlight_unixname %>/TWLight/bin/activate
