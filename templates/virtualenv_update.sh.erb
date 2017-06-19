@@ -14,6 +14,12 @@ pip install -r /var/www/html/TWLight/requirements/wmf.txt
 echo "migrate"
 python manage.py migrate
 # Compile translations
+# Compile translations
+echo "makemessages"
+python manage.py makemessages --locale=ar
+python manage.py makemessages --locale=fi
+python manage.py makemessages --locale=fr
+python manage.py makemessages --locale=iw
 echo "compilemessages"
 python manage.py compilemessages
 echo "collectstatic --noinput"
