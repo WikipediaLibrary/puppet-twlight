@@ -29,7 +29,6 @@ It does the following sorts of things:
 
 You probably only want to use this if you are developing or operating TWLight.
 
-
 ## Setup
 
 ### What twlight affects
@@ -54,6 +53,21 @@ Give [twlight_vagrant](https://github.com/WikipediaLibrary/twlight_vagrant) a go
 The classes, types, and resources for customizing, configuring, and doing
 the fancy stuff with this module are all shifting around rapidly since it's very
 immature.  Check out the default manifest in the vagrant environment for now.
+
+The only intended production environment for this is the wikimedia tools infrastructure.
+It's such a narrow-use module, that there's not much point in investing the effort to
+split it out into role modules + scap code deployment.
+
+So, to do a headless deploy on tools:
+1. new instance on horizon, with appropriate host-specific hiera config to allow access to the project share
+2. dump db on current site
+3. Do a local puppet run
+```
+puppet module install jsnshrmn/twlight --version x.x.x
+puppet apply some-manifest.pp
+```
+4. delete the proxy pointing to the old site
+5. create a proxy pointing to a new site
 
 
 ## Reference
