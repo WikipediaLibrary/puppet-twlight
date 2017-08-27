@@ -18,12 +18,15 @@ echo "makemigrations"
 python manage.py makemigrations
 echo "migrate"
 python manage.py migrate
+
 # Compile translations
 echo "makemessages"
-python manage.py makemessages --locale=ar
-python manage.py makemessages --locale=fi
-python manage.py makemessages --locale=fr
-python manage.py makemessages --locale=iw
+langs=($(python manage.py diffsettings | grep 'LANGUAGES' | grep -o "'[^']*'" | xargs))
+for locale in "${langs[@]}"; do
+  python manage.py makemessages --locale=${locale};
+done
+python manage.py makemessages --locale=qqq
+
 echo "compilemessages"
 python manage.py compilemessages
 echo "collectstatic --noinput"
