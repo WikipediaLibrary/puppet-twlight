@@ -8,6 +8,9 @@ virtualenv TWLight
 source /home/<%= @twlight_unixname %>/TWLight/bin/activate
 export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
 pip install -r /var/www/html/TWLight/requirements/wmf.txt
+<%if @twlight_environment != 'production' -%>
+pip install -r /var/www/html/TWLight/requirements/test.txt
+<% end -%>
 cd /var/www/html/TWLight
 echo "migrate"
 python manage.py migrate

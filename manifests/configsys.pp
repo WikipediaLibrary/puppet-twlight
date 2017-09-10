@@ -34,15 +34,25 @@ class twlight::configsys inherits twlight {
   }
 
   # Create twlight database
-  # CREATE DATABASE twlight CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
+  # CREATE DATABASE twlight;
   # GRANT ALL PRIVILEGES on twlight.* to twlight@'localhost' IDENTIFIED BY '<password>';
   mysql::db { 'twlight':
     user     => 'twlight',
     password => $twlight_mysqltwlight_pw,
     host     => 'localhost',
-#    charset  => 'utf8mb4',
-#    collate  => 'utf8mb4_general_ci',
     grant    => ['ALL'],
+  }
+
+  if $twlight_environment != 'production' {
+    # Create twlight test database
+    # CREATE DATABASE test_twlight;
+    # GRANT ALL PRIVILEGES on test_twlight.* to test_twlight@'localhost' IDENTIFIED BY '<password>';
+    mysql::db { 'test_twlight':
+      user     => 'twlight',
+      password => $twlight_mysqltwlight_pw,
+      host     => 'localhost',
+      grant    => ['ALL'],
+    }
   }
 
   # www dir
