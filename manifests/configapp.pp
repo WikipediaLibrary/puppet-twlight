@@ -7,11 +7,6 @@ class twlight::configapp inherits twlight {
     notify    => Exec['nginx_reload'],
   }
 
-  # Configure virtual environment
-  exec { 'virtualenv_update':
-    command => "/bin/bash /var/www/html/TWLight/bin/twlight_update_code.sh",
-  }
-
   file { '/etc/nginx/sites-available/twlight':
     ensure  => file,
     content => template('twlight/nginx.conf.twlight.erb'),

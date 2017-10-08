@@ -2,6 +2,7 @@
 
 # Fetch latest code from master
 cd /var/www/html/TWLight
+git checkout .
 git pull origin <%= @twlight_git_revision %>
 
 # Activate Django virtualenv and update pip dependencies

@@ -13,11 +13,9 @@ class twlight::handler inherits twlight {
     refreshonly => true,
   }
 
-  # Start gunicorn
-  # 60 second delay is a kludge that made gunicorn worky, at least in vagrant
-  exec { 'gunicorn_start':
-    command => "/bin/bash -c '/bin/sleep 60 && /bin/systemctl start gunicorn' &",
-    unless  => '/usr/bin/stat /var/www/html/TWLight/run/gunicorn.sock',
+  # Configure virtual environment
+  exec { 'virtualenv_update':
+    command => "/bin/bash /var/www/html/TWLight/bin/twlight_update_code.sh",
   }
 
 }

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 # Pull latest git, apply changes to Django
-sudo su <%= @twlight_unixname %> /home/www/virtualenv_update.sh 2>&1>/home/${twlight_unixname}/update.log &&\
 # If that succeeds, run the test suite
-sudo su <%= @twlight_unixname %> /home/www/virtualenv_test.sh 2>&1>/home/${twlight_unixname}/test.log &&\
 # If that succeeds, restart Green Unicorn
-sudo systemctl restart gunicorn
+sudo su <%= @twlight_unixname %> bash -c "\
+cd ~ &&\
+./virtualenv_update.sh >update.log 2>&1 &&\
+./virtualenv_test.sh >test.log 2>&1" &&\
+systemctl restart gunicorn
