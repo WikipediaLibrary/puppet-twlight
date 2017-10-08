@@ -1,19 +1,24 @@
-#!/bin/bash
-
-# Bail if gunicorn is running
-systemctl is-active gunicorn >/dev/null 2>&1 && exit 1;
+#!/usr/bin/env bash
 
 # Fetch latest code from master
 cd /var/www/html/TWLight
 git pull origin <%= @twlight_git_revision %>
 
-# Update Django
+# Activate Django virtualenv and update pip dependencies
+cd /home/<%= @twlight_unixname %>
+virtualenv TWLight
 source /home/<%= @twlight_unixname %>/TWLight/bin/activate
 export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
 pip install -r /var/www/html/TWLight/requirements/wmf.txt
-<%if @twlight_environment != 'production' -%>
-pip install -r /var/www/html/TWLight/requirements/test.txt
-<% end -%>
+
+# Run migrations
+cd /var/www/html/TWLight
+echo "migrate"
+python manage.py migrate
+echo "createinitialrevisions"
+python manage.py createinitialrevisions
+echo "makemigrations"
+python manage.py makemigrations
 echo "migrate"
 python manage.py migrate
 

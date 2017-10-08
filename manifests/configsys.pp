@@ -43,16 +43,14 @@ class twlight::configsys inherits twlight {
     grant    => ['ALL'],
   }
 
-  if $twlight_environment != 'production' {
-    # Create twlight test database
-    # CREATE DATABASE test_twlight;
-    # GRANT ALL PRIVILEGES on test_twlight.* to test_twlight@'localhost' IDENTIFIED BY '<password>';
-    mysql::db { 'test_twlight':
-      user     => 'twlight',
-      password => $twlight_mysqltwlight_pw,
-      host     => 'localhost',
-      grant    => ['ALL'],
-    }
+  # Create twlight test database
+  # CREATE DATABASE test_twlight;
+  # GRANT ALL PRIVILEGES on test_twlight.* to test_twlight@'localhost' IDENTIFIED BY '<password>';
+  mysql::db { 'test_twlight':
+    user     => 'twlight',
+    password => $twlight_mysqltwlight_pw,
+    host     => 'localhost',
+    grant    => ['ALL'],
   }
 
   # www dir

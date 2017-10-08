@@ -8,9 +8,8 @@ class twlight::configapp inherits twlight {
   }
 
   # Configure virtual environment
-  exec { 'virtualenv_init':
-    command => "/bin/bash /home/${twlight_unixname}/virtualenv_init.sh &> /home/${twlight_unixname}/virtualenv_init.log || :",
-    user    => $twlight_unixname,
+  exec { 'virtualenv_update':
+    command => "/bin/bash /var/www/html/TWLight/bin/twlight_update_code.sh",
   }
 
   file { '/etc/nginx/sites-available/twlight':
@@ -57,15 +56,6 @@ class twlight::configapp inherits twlight {
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
     mode    => '0400',
-  }
-
-  # Virtualenv bootstrap script
-  file {"/home/${twlight_unixname}/virtualenv_init.sh":
-    mode    => '0755',
-    owner   => $twlight_unixname,
-    group   => $twlight_unixname,
-    content => template('twlight/virtualenv_init.sh.erb'),
-    notify  => Exec['virtualenv_init']
   }
 
   # Virtualenv update script
