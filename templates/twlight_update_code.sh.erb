@@ -4,7 +4,6 @@
 # If that succeeds, run the test suite
 # If that succeeds, restart Green Unicorn
 sudo su <%= @twlight_unixname %> bash -c "\
-cd ~ &&\
-./virtualenv_update.sh >update.log 2>&1 &&\
-./virtualenv_test.sh >test.log 2>&1" &&\
+/var/www/html/TWLight/bin/./virtualenv_update.sh >>/var/www/html/TWLight/TWLight/logs/update.log 2>&1 &&\
+/var/www/html/TWLight/bin/./virtualenv_test.sh >>/var/www/html/TWLight/TWLight/logs/test.log 2>&1" &&\
 systemctl restart gunicorn

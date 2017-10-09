@@ -37,6 +37,22 @@ class twlight::configapp inherits twlight {
     mode   => '0644',
   }
 
+  # TWLight update log
+  file { '/var/www/html/TWLight/TWLight/logs/update.log':
+    ensure => file,
+    owner  => $twlight_unixname,
+    group  => $twlight_unixname,
+    mode   => '0644',
+  }
+
+  # TWLight test log
+  file { '/var/www/html/TWLight/TWLight/logs/test.log':
+    ensure => file,
+    owner  => $twlight_unixname,
+    group  => $twlight_unixname,
+    mode   => '0644',
+  }
+
   # Set perms for TWLight tree
   file { '/var/www/html/TWLight':
     ensure  => directory,
@@ -54,7 +70,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv update script
-  file {"/home/${twlight_unixname}/virtualenv_update.sh":
+  file {"/var/www/html/TWLight/bin/virtualenv_update.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -62,7 +78,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv clear static script
-  file {"/home/${twlight_unixname}/virtualenv_clearstatic.sh":
+  file {"/var/www/html/TWLight/bin/virtualenv_clearstatic.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -70,7 +86,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv test script
-  file {"/home/${twlight_unixname}/virtualenv_test.sh":
+  file {"/var/www/html/TWLight/bin/virtualenv_test.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
