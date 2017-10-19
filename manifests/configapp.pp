@@ -63,9 +63,9 @@ class twlight::configapp inherits twlight {
 
   # We always write out local vars so that we can run tests.
   if $twlight_environment != 'local' {
-    file { "/var/www/html/TWLight/TWLight/settings/local_vars.py":
+    file { '/var/www/html/TWLight/TWLight/settings/local_vars.py':
       ensure  => file,
-      content => template("twlight/local_vars.py.erb"),
+      content => template('twlight/local_vars.py.erb'),
       owner   => $twlight_unixname,
       group   => $twlight_unixname,
       mode    => '0400',
@@ -81,7 +81,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv update script
-  file {"/var/www/html/TWLight/bin/virtualenv_update.sh":
+  file { '/var/www/html/TWLight/bin/virtualenv_update.sh':
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -89,7 +89,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv clear static script
-  file {"/var/www/html/TWLight/bin/virtualenv_clearstatic.sh":
+  file { '/var/www/html/TWLight/bin/virtualenv_clearstatic.sh':
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -97,7 +97,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv test script
-  file {"/var/www/html/TWLight/bin/virtualenv_test.sh":
+  file { '/var/www/html/TWLight/bin/virtualenv_test.sh':
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -105,10 +105,10 @@ class twlight::configapp inherits twlight {
   }
 
   # mysql dump script
-  file {"/etc/cron.daily/twlight-mysqldump":
+  file { '/var/www/html/TWLight/bin/twlight_mysqldump.sh':
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
     mode    => '0755',
-    owner   => root,
-    group   => root,
     content => template('twlight/twlight_mysqldump.sh.erb'),
   }
 
@@ -143,6 +143,25 @@ class twlight::configapp inherits twlight {
     ensure => 'link',
     target => '/etc/init.d/gunicorn',
     force  => true,
+  }
+
+  # These cron tasks don't make too much sense in local environments
+  if $twlight_environment != 'local' {
+
+    # mysql dump cron task
+    file { '/etc/cron.daily/twlight-mysqldump':
+      ensure => 'link',
+      target => '/var/www/html/TWLight/bin/twlight_mysqldump.sh',
+      force  => true,
+    }
+
+    # TWLight git pull cron task
+    file { '/etc/cron.daily/twlight-update-code':
+      ensure => 'link',
+      target => '/var/www/html/TWLight/bin/twlight_update_code.sh',
+      force  => true,
+    }
+
   }
 
 }
