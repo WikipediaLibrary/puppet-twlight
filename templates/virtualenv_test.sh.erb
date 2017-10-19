@@ -3,7 +3,7 @@
 cd /home/<%= @twlight_unixname %>
 virtualenv TWLight
 source /home/<%= @twlight_unixname %>/TWLight/bin/activate
-export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
+export DJANGO_SETTINGS_MODULE=TWLight.settings.local
 pip install -r /var/www/html/TWLight/requirements/wmf.txt
 cd /var/www/html/TWLight
 echo "test --noinput"

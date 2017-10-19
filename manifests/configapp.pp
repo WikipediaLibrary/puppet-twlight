@@ -61,6 +61,17 @@ class twlight::configapp inherits twlight {
     group   => $twlight_unixname,
   }
 
+  # We always write out local vars so that we can run tests.
+  if $twlight_environment != 'local' {
+    file { "/var/www/html/TWLight/TWLight/settings/local_vars.py":
+      ensure  => file,
+      content => template("twlight/local_vars.py.erb"),
+      owner   => $twlight_unixname,
+      group   => $twlight_unixname,
+      mode    => '0400',
+    }
+  }
+
   file { "/var/www/html/TWLight/TWLight/settings/${twlight_environment}_vars.py":
     ensure  => file,
     content => template("twlight/${twlight_environment}_vars.py.erb"),
