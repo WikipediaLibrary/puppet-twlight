@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Make sure www owns the .git tree
+chown -R www:www /var/www/html/TWLight/.git
+
 # Pull latest git, apply changes to Django
 # If that succeeds, run the test suite
 # If that succeeds, restart Green Unicorn

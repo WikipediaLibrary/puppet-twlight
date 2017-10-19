@@ -8,9 +8,9 @@ server {
     server_name <%= @twlight_servername %>;
     root /var/www/html/TWLight/;
     client_max_body_size 4G;
+<% if @twlight_environment != 'local' %>
     proxy_intercept_errors on;
-
-
+<% end %>
     location /500-dog.jpeg {
         root /var/www/html/TWLight/TWLight/templates/500/;
     }
@@ -38,6 +38,8 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Host $host:<%= @twlight_externalport %>;
+        proxy_connect_timeout 300s;
+        proxy_read_timeout 300s;
         proxy_redirect off;
 
         proxy_pass   http://appserver;
