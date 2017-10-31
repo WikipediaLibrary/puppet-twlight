@@ -5,33 +5,11 @@ cd /var/www/html/TWLight
 git checkout .
 git pull origin <%= @twlight_git_revision %>
 
-# Activate Django virtualenv and update pip dependencies
-cd /home/<%= @twlight_unixname %>
-virtualenv TWLight
-source /home/<%= @twlight_unixname %>/TWLight/bin/activate
-export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
-pip install -r /var/www/html/TWLight/requirements/wmf.txt
+# update pip dependencies
+bash /var/www/html/TWLight/bin/virtualenv_pip_update.sh
 
-# Run migrations
-cd /var/www/html/TWLight
-echo "migrate"
-python manage.py migrate
-echo "createinitialrevisions"
-python manage.py createinitialrevisions
-echo "makemigrations"
-python manage.py makemigrations
-echo "migrate"
-python manage.py migrate
+# Run migrations.
+bash /var/www/html/TWLight/bin/virtualenv_migrate.sh
 
 # Compile translations
-echo "makemessages"
-langs=($(python manage.py diffsettings | grep 'LANGUAGES' | grep -o "'[^']*'" | xargs))
-for locale in "${langs[@]}"; do
-  python manage.py makemessages --locale=${locale};
-done
-python manage.py makemessages --locale=qqq
-
-echo "compilemessages"
-python manage.py compilemessages
-echo "collectstatic --noinput"
-python manage.py collectstatic --noinput
+bash /var/www/html/TWLight/bin/virtualenv_translate.sh

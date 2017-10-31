@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source /var/www/html/TWLight/bin/virtualenv_activate.sh
+
+# update pip dependencies
+cd /home/<%= @twlight_unixname %>
+pip install -r /var/www/html/TWLight/requirements/wmf.txt

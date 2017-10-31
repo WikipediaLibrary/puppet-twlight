@@ -80,12 +80,12 @@ class twlight::configapp inherits twlight {
     mode    => '0400',
   }
 
-  # Virtualenv update script
-  file { '/var/www/html/TWLight/bin/virtualenv_update.sh':
+  # Virtualenv activate script
+  file { '/var/www/html/TWLight/bin/virtualenv_activate.sh':
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
-    content => template('twlight/virtualenv_update.sh.erb'),
+    content => template('twlight/virtualenv_activate.sh.erb'),
   }
 
   # Virtualenv clear static script
@@ -96,12 +96,44 @@ class twlight::configapp inherits twlight {
     content => template('twlight/virtualenv_clearstatic.sh.erb'),
   }
 
+  # Virtualenv migrate script
+  file { '/var/www/html/TWLight/bin/virtualenv_migrate.sh':
+    mode    => '0755',
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    content => template('twlight/virtualenv_migrate.sh.erb'),
+  }
+
+  # Virtualenv pip update script
+  file { '/var/www/html/TWLight/bin/virtualenv_pip_update.sh':
+    mode    => '0755',
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    content => template('twlight/virtualenv_pip_update.sh.erb'),
+  }
+
   # Virtualenv test script
   file { '/var/www/html/TWLight/bin/virtualenv_test.sh':
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
     content => template('twlight/virtualenv_test.sh.erb'),
+  }
+
+  # Virtualenv translate script
+  file { '/var/www/html/TWLight/bin/virtualenv_translate.sh':
+    mode    => '0755',
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    content => template('twlight/virtualenv_translate.sh.erb'),
+  }
+
+  # Virtualenv update script
+  file { '/var/www/html/TWLight/bin/virtualenv_update.sh':
+    mode    => '0755',
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    content => template('twlight/virtualenv_update.sh.erb'),
   }
 
   # mysql dump script

@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-cd /home/<%= @twlight_unixname %>
-virtualenv TWLight
-source /home/<%= @twlight_unixname %>/TWLight/bin/activate
-export DJANGO_SETTINGS_MODULE=TWLight.settings.local
-pip install -r /var/www/html/TWLight/requirements/wmf.txt
-cd /var/www/html/TWLight
+source /var/www/html/TWLight/bin/virtualenv_activate.sh
+
 echo "test --noinput"
 python manage.py test --noinput

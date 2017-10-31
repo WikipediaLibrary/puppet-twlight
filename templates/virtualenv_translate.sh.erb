@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+source /var/www/html/TWLight/bin/virtualenv_activate.sh
+
+# Compile translations
+echo "makemessages"
+langs=($(python manage.py diffsettings | grep 'LANGUAGES' | grep -o "'[^']*'" | xargs))
+for locale in "${langs[@]}"; do
+  python manage.py makemessages --locale=${locale};
+done
+python manage.py makemessages --locale=qqq
+
+echo "compilemessages"
+python manage.py compilemessages
+echo "collectstatic --noinput"
+python manage.py collectstatic --noinput
