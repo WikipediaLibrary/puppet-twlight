@@ -1,9 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Bail if gunicorn is running
-systemctl is-active gunicorn >/dev/null 2>&1 && exit 1;
+# Generate right to left css
+node /var/www/html/TWLight/bin/twlight_cssjanus.js
 
+# Load virtual environment
 source /var/www/html/TWLight/bin/virtualenv_activate.sh
 
+# Ensure collectedstatic dir exists
+mkdir -p /var/www/html/TWLight/TWLight/collectedstatic
+
+# Clear and collect css
 echo "collectstatic --noinput --clear"
 python manage.py collectstatic --noinput --clear

@@ -4,7 +4,6 @@ class twlight::params {
   $package_ensure = 'present'
 
   $default_package_name = [
-  'apt-transport-https',
   'build-essential',
   'gettext',
   'git',
@@ -12,6 +11,7 @@ class twlight::params {
   'mariadb-client',
   'mariadb-server',
   'nginx',
+  'nodejs',
   'pandoc',
   'python-dev',
   'python-pip',

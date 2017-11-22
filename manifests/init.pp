@@ -49,6 +49,7 @@ class twlight (
   # mess everything up.  You can read about this at:
   # http://docs.puppetlabs.com/puppet/2.7/reference/lang_containment.html#known-issues
   anchor { 'twlight::begin': } ->
+  class { '::twlight::repo': } ->
   class { '::twlight::install': } ->
   class { '::twlight::configsys': } ->
   class { '::twlight::fetch': } ->

@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
-# Fetch latest code from master
+# Fetch latest code from master.
 cd /var/www/html/TWLight
 git checkout .
 git pull origin <%= @twlight_git_revision %>
 
-# update pip dependencies
+# Update pip dependencies.
 bash /var/www/html/TWLight/bin/virtualenv_pip_update.sh
 
 # Run migrations.
 bash /var/www/html/TWLight/bin/virtualenv_migrate.sh
 
-# Compile translations
+# Compile translations.
 bash /var/www/html/TWLight/bin/virtualenv_translate.sh
+
+# Process static assets.
+bash /var/www/html/TWLight/bin/virtualenv_clearstatic.sh

@@ -8,29 +8,26 @@ class twlight::configsys inherits twlight {
     managehome => true,
   }
 
-  # Check mtime on tzdata
-  file { '/usr/share/zoneinfo':
-    audit   => mtime,
-    recurse => true,
-    notify  => Exec['mysql_tzinfo']
-  }
-
-  # Load timezone tables into mysql on refresh
-  exec { 'mysql_tzinfo':
-    refreshonly => true,
-    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=${twlight_mysqlroot_pw} mysql",
-  }
-
   # config mariadb server using another module
   class {'::mysql::server':
     package_manage          => false,
     service_name            => 'mysql',
     root_password           => $twlight_mysqlroot_pw,
-    remove_default_accounts => true
+    remove_default_accounts => true,
+    notify  => Exec['mysql_tzinfo'],
+    require => Package['mariadb-server'],
   }
+
+  # Load timezone tables into mysql on refresh
+  exec { 'mysql_tzinfo':
+    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=${twlight_mysqlroot_pw} mysql",
+    require => Class['::mysql::server'],
+  }
+
 
   class {'::mysql::client':
     package_manage          => false,
+    require => Package['mariadb-client'],
   }
 
   # Create twlight database
@@ -41,6 +38,7 @@ class twlight::configsys inherits twlight {
     password => $twlight_mysqltwlight_pw,
     host     => 'localhost',
     grant    => ['ALL'],
+    require => Package['mariadb-client', 'mariadb-server'],
   }
 
   # Create twlight test database
@@ -51,6 +49,7 @@ class twlight::configsys inherits twlight {
     password => $twlight_mysqltwlight_pw,
     host     => 'localhost',
     grant    => ['ALL'],
+    require => Package['mariadb-client', 'mariadb-server'],
   }
 
   # www dir

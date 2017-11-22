@@ -7,6 +7,13 @@ class twlight::configapp inherits twlight {
     notify    => Exec['nginx_reload'],
   }
 
+  # Install cssjanus in twlight users homedir
+  exec { 'npm_install_cssjanus':
+    command   => '/usr/bin/npm install cssjanus',
+    cwd       => "/home/${twlight_unixname}",
+    user      => "${twlight_unixname}",
+  }
+
   file { '/etc/nginx/sites-available/twlight':
     ensure  => file,
     content => template('twlight/nginx.conf.twlight.erb'),
@@ -142,6 +149,14 @@ class twlight::configapp inherits twlight {
     group   => $twlight_unixname,
     mode    => '0755',
     content => template('twlight/twlight_mysqldump.sh.erb'),
+  }
+
+  # Node.js cssjanus script
+  file { '/var/www/html/TWLight/bin/twlight_cssjanus.js':
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0755',
+    content => template('twlight/twlight_cssjanus.js.erb'),
   }
 
   # TWLight git pull wrapper script
