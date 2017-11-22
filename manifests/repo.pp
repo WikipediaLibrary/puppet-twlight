@@ -7,7 +7,7 @@ class twlight::repo inherits twlight {
       ensure  => $package_ensure,
     }
 
-    # Install Node.js 8.x
+    # Add Node.js 8.x repo, pinned one higher than the wiki repos.
     # But not via their provided "curl | sudo bash" mechanism
     # https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
     apt::source { 'nodesource':
@@ -15,6 +15,7 @@ class twlight::repo inherits twlight {
       location => 'https://deb.nodesource.com/node_8.x',
       release  => 'jessie',
       repos    => 'main',
+      pin      => '1002',
       key      => {
         'id'     => '9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280',
         'source' => 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key',
