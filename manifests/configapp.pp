@@ -143,6 +143,14 @@ class twlight::configapp inherits twlight {
     content => template('twlight/virtualenv_update.sh.erb'),
   }
 
+  # Virtualenv coordinator reminder script
+  file { '/var/www/html/TWLight/bin/virtualenv_send_coordinator_reminders.sh':
+    mode    => '0755',
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    content => template('twlight/virtualenv_send_coordinator_reminders.sh.erb'),
+  }
+
   # mysql dump script
   file { '/var/www/html/TWLight/bin/twlight_mysqldump.sh':
     owner   => $twlight_unixname,
