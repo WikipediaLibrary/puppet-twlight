@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+<% if @twlight_environment == 'production' %>
 
 # Send weekly reminders to coordinators.
 sudo su <%= @twlight_unixname %> bash -c "\
 /var/www/html/TWLight/bin/./virtualenv_send_coordinator_reminders.sh"
+<% end %>
