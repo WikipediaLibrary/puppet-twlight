@@ -151,7 +151,15 @@ class twlight::configapp inherits twlight {
     content => template('twlight/virtualenv_send_coordinator_reminders.sh.erb'),
   }
 
-  # mysql dump script
+  # Weekly task wrapper script
+  file { '/var/www/html/TWLight/bin/twlight_weekly.sh':
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0755',
+    content => template('twlight/twlight_weekly.sh.erb'),
+  }
+
+  # Mysql dump script
   file { '/var/www/html/TWLight/bin/twlight_mysqldump.sh':
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -202,6 +210,13 @@ class twlight::configapp inherits twlight {
 
   # These cron tasks don't make too much sense in local environments
   if $twlight_environment != 'local' {
+
+    # weekly cron task
+    file { '/etc/cron.weekly/twlight':
+      ensure => 'link',
+      target => '/var/www/html/TWLight/bin/twlight_weekly.sh',
+      force  => true,
+    }
 
     # mysql dump cron task
     file { '/etc/cron.daily/twlight-mysqldump':
