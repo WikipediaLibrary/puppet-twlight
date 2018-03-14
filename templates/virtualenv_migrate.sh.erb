@@ -4,7 +4,6 @@ source /var/www/html/TWLight/bin/virtualenv_activate.sh
 
 # Run migrations
 echo "migrate"
-python manage.py syncdb --noinput
 python manage.py createinitialrevisions
 python manage.py makemigrations
 python manage.py migrate
