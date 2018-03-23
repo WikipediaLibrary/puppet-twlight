@@ -173,6 +173,7 @@ class twlight::configapp inherits twlight {
     group   => $twlight_unixname,
     mode    => '0755',
     content => template('twlight/twlight_backup.sh.erb'),
+  }
 
   # Mysql dump script
   file { "${twlight_root_dir}/bin/twlight_mysqldump.sh":
