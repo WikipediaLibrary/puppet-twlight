@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
+
+dom=$(date -d "$D" '+%d')
+twlight_root_dir=<%= @twlight_root_dir %>
+
+## Dump DB
+source ${twlight_root_dir}/bin/twlight_mysqldump.sh
+
+twlight_mysqldump_dir=<%= @twlight_mysqldump_dir %>
+twlight_backup_dir=<%= @twlight_backup_dir %>
+echo "Backing up database and media"
+
+## Perform backup
+tar -czf "$twlight_backup_dir/twlight_${dom}.tar.gz" -C "${twlight_mysqldump_dir}" "./twlight.sql" -C "${twlight_root_dir}" "./media"
+
+## Root only
+chmod 0600 "$twlight_backup_dir/twlight_${dom}.tar.gz"
+
+echo "Finished TWLight backup."
