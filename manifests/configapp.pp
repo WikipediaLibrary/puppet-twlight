@@ -151,6 +151,14 @@ class twlight::configapp inherits twlight {
     content => template('twlight/virtualenv_send_coordinator_reminders.sh.erb'),
   }
 
+  # Daily task wrapper script
+  file { "${twlight_root_dir}/bin/twlight_daily.sh":
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0755',
+    content => template('twlight/twlight_daily.sh.erb'),
+  }
+
   # Weekly task wrapper script
   file { "${twlight_root_dir}/bin/twlight_weekly.sh":
     owner   => $twlight_unixname,
@@ -158,6 +166,13 @@ class twlight::configapp inherits twlight {
     mode    => '0755',
     content => template('twlight/twlight_weekly.sh.erb'),
   }
+
+  # Backup script
+  file { "${twlight_root_dir}/bin/twlight_backup.sh":
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0755',
+    content => template('twlight/twlight_backup.sh.erb'),
 
   # Mysql dump script
   file { "${twlight_root_dir}/bin/twlight_mysqldump.sh":
