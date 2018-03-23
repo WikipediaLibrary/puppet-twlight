@@ -3,7 +3,7 @@ class twlight::configapp inherits twlight {
   # reload systemd
   exec { 'daemon_reload':
     command   => '/bin/systemctl daemon-reload',
-    subscribe => [ File["/var/www/html/TWLight/TWLight/settings/${twlight_environment}_vars.py"], File['/etc/rc3.d/S05gunicorn'] ],
+    subscribe => [ File["${twlight_root_dir}/TWLight/settings/${twlight_environment}_vars.py"], File['/etc/rc3.d/S05gunicorn'] ],
     notify    => Exec['nginx_reload'],
   }
 
@@ -29,7 +29,7 @@ class twlight::configapp inherits twlight {
   }
 
   # TWLight app log
-  file { '/var/www/html/TWLight/TWLight/logs/twlight.log':
+  file { "${twlight_root_dir}/TWLight/logs/twlight.log":
     ensure => file,
     owner  => $twlight_unixname,
     group  => $twlight_unixname,
@@ -37,7 +37,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Gunicorn server log
-  file { '/var/www/html/TWLight/TWLight/logs/gunicorn.log':
+  file { "${twlight_root_dir}/TWLight/logs/gunicorn.log":
     ensure => file,
     owner  => $twlight_unixname,
     group  => $twlight_unixname,
@@ -45,7 +45,7 @@ class twlight::configapp inherits twlight {
   }
 
   # TWLight update log
-  file { '/var/www/html/TWLight/TWLight/logs/update.log':
+  file { "${twlight_root_dir}/TWLight/logs/update.log":
     ensure => file,
     owner  => $twlight_unixname,
     group  => $twlight_unixname,
@@ -53,7 +53,7 @@ class twlight::configapp inherits twlight {
   }
 
   # TWLight test log
-  file { '/var/www/html/TWLight/TWLight/logs/test.log':
+  file { "${twlight_root_dir}/TWLight/logs/test.log":
     ensure => file,
     owner  => $twlight_unixname,
     group  => $twlight_unixname,
@@ -61,7 +61,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Set perms for TWLight tree
-  file { '/var/www/html/TWLight':
+  file { "${twlight_root_dir}":
     ensure  => directory,
     recurse => true,
     owner   => $twlight_unixname,
@@ -70,7 +70,7 @@ class twlight::configapp inherits twlight {
 
   # We always write out local vars so that we can run tests.
   if $twlight_environment != 'local' {
-    file { '/var/www/html/TWLight/TWLight/settings/local_vars.py':
+    file { "${twlight_root_dir}/TWLight/settings/local_vars.py":
       ensure  => file,
       content => template('twlight/local_vars.py.erb'),
       owner   => $twlight_unixname,
@@ -79,7 +79,7 @@ class twlight::configapp inherits twlight {
     }
   }
 
-  file { "/var/www/html/TWLight/TWLight/settings/${twlight_environment}_vars.py":
+  file { "${twlight_root_dir}/TWLight/settings/${twlight_environment}_vars.py":
     ensure  => file,
     content => template("twlight/${twlight_environment}_vars.py.erb"),
     owner   => $twlight_unixname,
@@ -88,7 +88,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv activate script
-  file { '/var/www/html/TWLight/bin/virtualenv_activate.sh':
+  file { "${twlight_root_dir}/bin/virtualenv_activate.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -96,7 +96,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv clear static script
-  file { '/var/www/html/TWLight/bin/virtualenv_clearstatic.sh':
+  file { "${twlight_root_dir}/bin/virtualenv_clearstatic.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -104,7 +104,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv migrate script
-  file { '/var/www/html/TWLight/bin/virtualenv_migrate.sh':
+  file { "${twlight_root_dir}/bin/virtualenv_migrate.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -112,7 +112,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv pip update script
-  file { '/var/www/html/TWLight/bin/virtualenv_pip_update.sh':
+  file { "${twlight_root_dir}/bin/virtualenv_pip_update.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -120,7 +120,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv test script
-  file { '/var/www/html/TWLight/bin/virtualenv_test.sh':
+  file { "${twlight_root_dir}/bin/virtualenv_test.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -128,7 +128,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv translate script
-  file { '/var/www/html/TWLight/bin/virtualenv_translate.sh':
+  file { "${twlight_root_dir}/bin/virtualenv_translate.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -136,7 +136,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv update script
-  file { '/var/www/html/TWLight/bin/virtualenv_update.sh':
+  file { "${twlight_root_dir}/bin/virtualenv_update.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -144,7 +144,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Virtualenv coordinator reminder script
-  file { '/var/www/html/TWLight/bin/virtualenv_send_coordinator_reminders.sh':
+  file { "${twlight_root_dir}/bin/virtualenv_send_coordinator_reminders.sh":
     mode    => '0755',
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
@@ -152,7 +152,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Weekly task wrapper script
-  file { '/var/www/html/TWLight/bin/twlight_weekly.sh':
+  file { "${twlight_root_dir}/bin/twlight_weekly.sh":
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
     mode    => '0755',
@@ -160,7 +160,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Mysql dump script
-  file { '/var/www/html/TWLight/bin/twlight_mysqldump.sh':
+  file { "${twlight_root_dir}/bin/twlight_mysqldump.sh":
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
     mode    => '0755',
@@ -168,7 +168,7 @@ class twlight::configapp inherits twlight {
   }
 
   # Node.js cssjanus script
-  file { '/var/www/html/TWLight/bin/twlight_cssjanus.js':
+  file { "${twlight_root_dir}/bin/twlight_cssjanus.js":
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
     mode    => '0755',
@@ -176,7 +176,7 @@ class twlight::configapp inherits twlight {
   }
 
   # TWLight git pull wrapper script
-  file { '/var/www/html/TWLight/bin/twlight_update_code.sh':
+  file { "${twlight_root_dir}/bin/twlight_update_code.sh":
     ensure  => file,
     content => template('twlight/twlight_update_code.sh.erb'),
     owner   => $twlight_unixname,
@@ -185,7 +185,7 @@ class twlight::configapp inherits twlight {
   }
 
   # gunicorn start script
-  file { '/var/www/html/TWLight/bin/gunicorn_start.sh':
+  file { "${twlight_root_dir}/bin/gunicorn_start.sh":
     ensure  => file,
     content => template('twlight/gunicorn_start.sh.erb'),
     owner   => $twlight_unixname,
@@ -214,21 +214,21 @@ class twlight::configapp inherits twlight {
     # weekly cron task
     file { '/etc/cron.weekly/twlight':
       ensure => 'link',
-      target => '/var/www/html/TWLight/bin/twlight_weekly.sh',
+      target => "${twlight_root_dir}/bin/twlight_weekly.sh",
       force  => true,
     }
 
     # mysql dump cron task
     file { '/etc/cron.daily/twlight-mysqldump':
       ensure => 'link',
-      target => '/var/www/html/TWLight/bin/twlight_mysqldump.sh',
+      target => "${twlight_root_dir}/bin/twlight_mysqldump.sh",
       force  => true,
     }
 
     # TWLight git pull cron task
     file { '/etc/cron.daily/twlight-update-code':
       ensure => 'link',
-      target => '/var/www/html/TWLight/bin/twlight_update_code.sh',
+      target => "${twlight_root_dir}/bin/twlight_update_code.sh",
       force  => true,
     }
 

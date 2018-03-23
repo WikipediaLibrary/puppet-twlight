@@ -1,8 +1,8 @@
 #!/bin/bash
 
 NAME="twlight"
-DJANGODIR=/var/www/html/TWLight/
-SOCKFILE=/var/www/html/TWLight/run/gunicorn.sock
+DJANGODIR=<%= @twlight_root_dir %>/
+SOCKFILE=<%= @twlight_root_dir %>/run/gunicorn.sock
 DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
 DJANGO_WSGI_MODULE=TWLight.wsgi
 USER=<%= @twlight_unixname %>
@@ -29,4 +29,4 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
   --timeout $TIMEOUT \
   --bind=unix:$SOCKFILE \
   --log-level=debug \
-  --log-file=/var/www/html/TWLight/TWLight/logs/gunicorn.log
+  --log-file=<%= @twlight_root_dir %>/TWLight/logs/gunicorn.log

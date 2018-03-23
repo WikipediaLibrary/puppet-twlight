@@ -5,4 +5,4 @@ cd /home/<%= @twlight_unixname %>
 virtualenv TWLight
 source /home/<%= @twlight_unixname %>/TWLight/bin/activate
 export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
-cd /var/www/html/TWLight
+cd <%= @twlight_root_dir %>

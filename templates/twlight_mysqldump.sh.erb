@@ -8,7 +8,7 @@ twlight_mysqldumpdir=<%= @twlight_mysqldumpdir %>
 twlight_mysqlhost=localhost
 twlight_mysqldb=twlight
 twlight_mysqluser=twlight
-twlight_mysqlpass=$(cat /var/www/html/TWLight/TWLight/settings/<%= @twlight_environment %>_vars.py | grep ^MYSQL_PASSWORD | cut -d "=" -f 2 | xargs)
+twlight_mysqlpass=$(cat <%= @twlight_root_dir %>/TWLight/settings/<%= @twlight_environment %>_vars.py | grep ^MYSQL_PASSWORD | cut -d "=" -f 2 | xargs)
 
 echo "Dumping TWLight database"
 

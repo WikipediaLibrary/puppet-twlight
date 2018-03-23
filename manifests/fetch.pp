@@ -1,6 +1,6 @@
 class twlight::fetch inherits twlight {
 
-  vcsrepo { '/var/www/html/TWLight':
+  vcsrepo { "${twlight_root_dir}":
     ensure   => present,
     provider => git,
     source   => $twlight_git_repository,

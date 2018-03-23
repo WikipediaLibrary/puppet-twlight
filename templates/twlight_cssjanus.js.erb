@@ -26,7 +26,7 @@ var _getAllFilesFromFolder = function(dir) {
 };
 
 // Get all the files from the css dir
-var infiles = _getAllFilesFromFolder('/var/www/html/TWLight/TWLight/static/css');
+var infiles = _getAllFilesFromFolder('<%= @twlight_root_dir %>/TWLight/static/css');
 
 // Loop through all the files
 infiles.forEach(function(infile) {
