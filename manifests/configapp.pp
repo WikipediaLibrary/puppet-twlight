@@ -234,17 +234,10 @@ class twlight::configapp inherits twlight {
       force  => true,
     }
 
-    # mysql dump cron task
-    file { '/etc/cron.daily/twlight-mysqldump':
+    # daily cron task
+    file { '/etc/cron.daily/twlight':
       ensure => 'link',
-      target => "${twlight_root_dir}/bin/twlight_mysqldump.sh",
-      force  => true,
-    }
-
-    # TWLight git pull cron task
-    file { '/etc/cron.daily/twlight-update-code':
-      ensure => 'link',
-      target => "${twlight_root_dir}/bin/twlight_update_code.sh",
+      target => "${twlight_root_dir}/bin/twlight_daily.sh",
       force  => true,
     }
 
