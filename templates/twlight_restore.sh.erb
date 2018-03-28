@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
+
+dom=$(date -d "$D" '+%d')
+twlight_root_dir=<%= @twlight_root_dir %>
+
+## Extract tarball
+tar -xvzf  '${twlight_backup_dir}/twlight_${dom}.tar.gz' -C '${twlight_root_dir}' --no-overwrite-dir
+
+## Import DB
+source ${twlight_root_dir}/bin/twlight_mysqlimport.sh
+
+## Set perms
+chown -R <%= @twlight_unixname %> "${twlight_root_dir}"
+find "${twlight_root_dir}/media" -type f | xargs chmod 644
+
+echo "Finished TWLight restore."

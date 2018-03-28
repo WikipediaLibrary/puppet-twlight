@@ -13,9 +13,9 @@ twlight_backup_dir=<%= @twlight_backup_dir %>
 echo "Backing up database and media"
 
 ## Perform backup
-tar -czf "$twlight_backup_dir/twlight_${dom}.tar.gz" -C "${twlight_mysqldump_dir}" "./twlight.sql" -C "${twlight_root_dir}" "./media"
+tar -czf "${twlight_backup_dir}/twlight_${dom}.tar.gz" -C "${twlight_mysqldump_dir}" "./twlight.sql" -C "${twlight_root_dir}" "./media"
 
 ## Root only
-chmod 0600 "$twlight_backup_dir/twlight_${dom}.tar.gz"
+chmod 0600 "${twlight_backup_dir}/twlight_${dom}.tar.gz"
 
 echo "Finished TWLight backup."
