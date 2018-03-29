@@ -1,18 +1,24 @@
 #!/usr/bin/env bash
 
+if [  -z "$1" ]; then
+    exit 1;
+fi
+
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
+twlight_restore_file=${1}
 dom=$(date -d "$D" '+%d')
 twlight_root_dir=<%= @twlight_root_dir %>
+twlight_dump_dir=<%= @twlight_dump_dir %>
 
 ## Extract tarball
-tar -xvzf  '${twlight_backup_dir}/twlight_${dom}.tar.gz' -C '${twlight_root_dir}' --no-overwrite-dir
+tar -xvzf  '${twlight_restore_file}' -C '${twlight_root_dir}' --no-overwrite-dir
 
 ## Import DB
 ${twlight_root_dir}/bin/twlight_mysqlimport.sh ${twlight_root_dir}/twlight.sql
 
 ## Don't leave an extra DB dump laying out.
-rm "${twlight_root_dir}/twlight.sql"
+rm -f "${twlight_root_dir}/twlight.sql"
 
 ## Set perms
 chown -R <%= @twlight_unixname %> "${twlight_root_dir}"

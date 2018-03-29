@@ -1,10 +1,10 @@
 class twlight::handler inherits twlight {
 
-  # Import DB Dump if available
+  # Import Backup if available
   exec { 'mysql_import':
-    command   => "/usr/bin/mysql -u twlight -p${twlight_mysqltwlight_pw} -D twlight < ${twlight_mysqlimport}",
+    command   => "/bin/bash ${twlight_root_dir}/bin/twlight_restore.sh ${twlight_restore_file}",
     logoutput => true,
-    onlyif    => "/usr/bin/stat ${twlight_mysqlimport}",
+    onlyif    => "/usr/bin/stat ${twlight_restore_file}",
   }
 
   # Reload nginx

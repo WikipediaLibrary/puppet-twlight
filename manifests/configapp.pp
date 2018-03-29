@@ -175,12 +175,28 @@ class twlight::configapp inherits twlight {
     content => template('twlight/twlight_backup.sh.erb'),
   }
 
+  # Restore script
+  file { "${twlight_root_dir}/bin/twlight_restore.sh":
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0755',
+    content => template('twlight/twlight_restore.sh.erb'),
+  }
+
   # Mysql dump script
   file { "${twlight_root_dir}/bin/twlight_mysqldump.sh":
     owner   => $twlight_unixname,
     group   => $twlight_unixname,
     mode    => '0755',
     content => template('twlight/twlight_mysqldump.sh.erb'),
+  }
+
+  # Mysql import script
+  file { "${twlight_root_dir}/bin/twlight_mysqlimport.sh":
+    owner   => $twlight_unixname,
+    group   => $twlight_unixname,
+    mode    => '0755',
+    content => template('twlight/twlight_mysqlimport.sh.erb'),
   }
 
   # Node.js cssjanus script
