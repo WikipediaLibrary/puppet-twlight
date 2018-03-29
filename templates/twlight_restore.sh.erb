@@ -9,7 +9,10 @@ twlight_root_dir=<%= @twlight_root_dir %>
 tar -xvzf  '${twlight_backup_dir}/twlight_${dom}.tar.gz' -C '${twlight_root_dir}' --no-overwrite-dir
 
 ## Import DB
-source ${twlight_root_dir}/bin/twlight_mysqlimport.sh
+${twlight_root_dir}/bin/twlight_mysqlimport.sh ${twlight_root_dir}/twlight.sql
+
+## Don't leave an extra DB dump laying out.
+rm "${twlight_root_dir}/twlight.sql"
 
 ## Set perms
 chown -R <%= @twlight_unixname %> "${twlight_root_dir}"

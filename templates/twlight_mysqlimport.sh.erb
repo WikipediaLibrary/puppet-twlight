@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
+if [  -z "$1" ]; then
+    exit 1;
+fi
+
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-twlight_mysqldump_dir=<%= @twlight_mysqldump_dir %>
+twlight_mysqlimport_file=${1}
 twlight_mysqlhost=localhost
 twlight_mysqldb=twlight
 twlight_mysqluser=twlight
@@ -11,9 +15,6 @@ twlight_mysqlpass=$(cat <%= @twlight_root_dir %>/TWLight/settings/local_vars.py 
 echo "Importing TWLight database"
 
 ## Perform mysql import
-bash -c "mysql  -h '${twlight_mysqlhost}' -u '${twlight_mysqluser}' -p'${twlight_mysqlpass}' -D '${twlight_mysqldb}' < '${twlight_root_dir}/twlight.sql'"
-
-## Don't leave an extra DB dump laying out.
-rm "${twlight_root_dir}/twlight.sql"
+bash -c "mysql  -h '${twlight_mysqlhost}' -u '${twlight_mysqluser}' -p'${twlight_mysqlpass}' -D '${twlight_mysqldb}' < '${twlight_mysqlimport_file}'"
 
 echo "Finished importing TWLight database."
