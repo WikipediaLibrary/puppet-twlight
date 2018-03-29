@@ -12,7 +12,7 @@ twlight_root_dir=<%= @twlight_root_dir %>
 twlight_dump_dir=<%= @twlight_dump_dir %>
 
 ## Extract tarball
-tar -xvzf  '${twlight_restore_file}' -C '${twlight_root_dir}' --no-overwrite-dir
+tar -xvzf  "${twlight_restore_file}" -C "${twlight_root_dir}" --no-overwrite-dir
 
 ## Import DB
 ${twlight_root_dir}/bin/twlight_mysqlimport.sh ${twlight_root_dir}/twlight.sql
