@@ -77,4 +77,9 @@ class twlight::configsys inherits twlight {
     notify => Exec['nginx_reload']
   }
 
+  # remove default nginx site
+  file {'/etc/nginx/sites-enabled/default':
+    ensure => 'absent',
+    notify => Exec['nginx_reload']
+  }
 }
