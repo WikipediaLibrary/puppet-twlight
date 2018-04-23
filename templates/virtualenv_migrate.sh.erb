@@ -6,7 +6,6 @@ source <%= @twlight_root_dir %>/bin/virtualenv_activate.sh
 echo "migrate"
 python manage.py createinitialrevisions
 python manage.py makemigrations
-python manage.py sync_translation_fields --noinput
 python manage.py migrate
 apps=($(python manage.py diffsettings | grep 'TWLIGHT_APPS' | grep -o "'[^']*'" | xargs))
 for path in "${apps[@]}"; do
@@ -23,3 +22,7 @@ for path in "${apps[@]}"; do
   echo "migrate ${app}"
   python manage.py migrate ${app};
 done
+
+# Sync Translation fields
+echo "sync_translation_fields"
+python manage.py sync_translation_fields --noinput
