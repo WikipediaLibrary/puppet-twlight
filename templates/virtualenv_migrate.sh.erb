@@ -22,7 +22,3 @@ for path in "${apps[@]}"; do
   echo "migrate ${app}"
   python manage.py migrate ${app};
 done
-
-# Sync Translation fields
-echo "sync_translation_fields"
-python manage.py sync_translation_fields --noinput
