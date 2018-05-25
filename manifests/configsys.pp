@@ -8,6 +8,12 @@ class twlight::configsys inherits twlight {
     managehome => true,
   }
 
+  # needed since libmariadb-client-lgpl-dev is providing client development files.
+  file { '/usr/bin/mysql_config':
+    ensure => 'link',
+    target => '/usr/bin/mariadb_config',
+  }
+
   # config mariadb server using another module
   class {'::mysql::server':
     package_manage          => false,
