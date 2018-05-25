@@ -20,7 +20,17 @@ class twlight::configsys inherits twlight {
     service_name            => 'mysql',
     root_password           => $twlight_mysqlroot_pw,
     remove_default_accounts => true,
-    notify  => Exec['mysql_tzinfo'],
+    notify                  => Exec['mysql_tzinfo'],
+    override_options        => $twlight_mysql_override_options,
+    require                 => Tidy['mysql_ibdata'],
+    restart                 => 'true',
+  }
+
+  # Delete the database so we can change the block size
+  tidy { 'mysql_ibdata':
+    path    => '/var/lib/mysql',
+    recurse => true,
+    matches => ['ibdata1','ib_logfile*'],
     require => Package['mariadb-server'],
   }
 
