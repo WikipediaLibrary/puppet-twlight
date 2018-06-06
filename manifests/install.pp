@@ -6,17 +6,18 @@ class twlight::install inherits twlight {
     notify  =>Exec['virtualenv_install']
   }
 
-  # Pip install virtualenv
-  exec { 'virtualenv_install':
-    command     => '/usr/bin/pip install virtualenv'
-  }
-
   # Install our packages
   if $twlight::package_manage {
     package { $package_name:
       ensure  => $package_ensure,
-      require => Exec['apt-update']
+      require => Exec['apt-update'],
+      before  => Exec['virtualenv_install'],
     }
+  }
+
+  # Pip install virtualenv
+  exec { 'virtualenv_install':
+    command     => '/usr/bin/pip install virtualenv'
   }
 
 }

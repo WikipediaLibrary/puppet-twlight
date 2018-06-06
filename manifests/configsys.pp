@@ -14,30 +14,37 @@ class twlight::configsys inherits twlight {
     target => '/usr/bin/mariadb_config',
   }
 
-  # config mariadb server using another module
-  class {'::mysql::server':
-    package_manage          => false,
-    service_name            => 'mysql',
-    root_password           => $twlight_mysqlroot_pw,
-    remove_default_accounts => true,
-    notify                  => Exec['mysql_tzinfo'],
-    override_options        => $twlight_mysql_override_options,
-    require                 => Tidy['mysql_ibdata'],
-    restart                 => 'true',
-  }
-
   # Delete the database so we can change the block size
   tidy { 'mysql_ibdata':
     path    => '/var/lib/mysql',
     recurse => true,
     matches => ['ibdata1','ib_logfile*'],
     require => Package['mariadb-server'],
+    notify  => Exec['mysql_tidy_restart'],
+    before => Class['::mysql::server'],
+  }
+
+  # Restart MySQL after tidy
+  exec { 'mysql_tidy_restart':
+    command     => '/bin/systemctl restart mysql',
+    unless    => '/usr/bin/stat /var/lib/mysql/ibdata1 /var/lib/mysql/ib_logfile*',
+  }
+
+  # config mariadb server using another module
+  class {'::mysql::server':
+    package_manage          => false,
+    service_name            => 'mysql',
+    root_password           => $twlight_mysqlroot_pw,
+    remove_default_accounts => true,
+    override_options        => $twlight_mysql_override_options,
+    require                 => Tidy['mysql_ibdata'],
+    restart                 => false,
   }
 
   # Load timezone tables into mysql on refresh
   exec { 'mysql_tzinfo':
-    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user root --password=${twlight_mysqlroot_pw} mysql",
-    require => Class['::mysql::server'],
+    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | /usr/bin/mysql --user root --password=${twlight_mysqlroot_pw} mysql",
+#    require => Class['::mysql::server'],
   }
 
 
