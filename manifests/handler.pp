@@ -15,7 +15,7 @@ class twlight::handler inherits twlight {
 
   # Configure virtual environment
   exec { 'virtualenv_update':
-    command => "/bin/bash ${root_dir}/bin/update_code.sh",
+    command => "/bin/bash ${root_dir}/bin/twlight_update_code.sh",
   }
 
 }
