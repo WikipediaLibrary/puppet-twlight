@@ -1,6 +1,6 @@
 class twlight::params {
   $git_repository =  lookup('twlight::params::git_repository', {value_type => String, default_value => 'https://github.com/WikipediaLibrary/TWLight.git'})
-  $git_revision = 'master'
+  $git_revision =  lookup('twlight::params::git_revision', {value_type => String, default_value => 'master'})
   $mysqlroot_pw = lookup('twlight::params::mysqlroot_pw', {value_type => String})
   $mysqltwlight_pw = lookup('twlight::params::mysqltwlight_pw', {value_type => String})
   $restore_file = lookup('twlight::params::restore_file', {value_type => String})
@@ -8,14 +8,11 @@ class twlight::params {
   $servername = lookup('twlight::params::servername', {value_type => String})
   $secretkey = lookup('twlight::params::secretkey', {value_type => String})
   $allowedhosts = lookup('twlight::params::allowedhosts', {value_type => String})
+  $oauth_key = lookup('twlight::params::oauth_key', {value_type => String})
+  $oauth_secret = lookup('twlight::params::oauth_secret', {value_type => String})
 
   $root_dir = '/var/www/html/TWLight'
-  #$mysqlroot_pw = 'vagrant'
-  #$mysqltwlight_pw = 'vagrant'
-  #$restore_file = '/vagrant/backup/twlight.tar.gz'
-  #$backup_dir = '/vagrant/backup'
   $mysqldump_dir = '/var/www/html/TWLight'
-  #$servername = 'twlight.vagrant.localdomain'
   $serverport = '80'
   $externalport = '80'
   $environment = 'local'
@@ -44,24 +41,6 @@ class twlight::params {
       'default-character-set' => 'utf8mb4'
     },
   }
-#  $git_repository = hiera('twlight::params::git_repository')
-#  $git_revision = undef
-#  $root_dir = undef
-#  $mysqlroot_pw = undef
-#  $mysqltwlight_pw = undef
-#  $restore_file = undef
-#  $backup_dir = undef
-#  $mysqldump_dir = undef
-#  $servername = undef
-#  $serverport = undef
-#  $externalport = undef
-#  $environment = undef
-#  $unixname = undef
-#  $mysql_override_options = undef
-#  $secretkey = undef
-#  $allowedhosts = undef
-#  $baseurl = undef
-#  $oauth_provider_url = undef
 
   $package_manage = true
   $package_ensure = 'present'
