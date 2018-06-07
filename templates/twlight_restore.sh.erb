@@ -6,22 +6,22 @@ fi
 
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-twlight_restore_file=${1}
+restore_file=${1}
 dom=$(date -d "$D" '+%d')
-twlight_root_dir=<%= @twlight_root_dir %>
-twlight_dump_dir=<%= @twlight_dump_dir %>
+root_dir=<%= @root_dir %>
+dump_dir=<%= @dump_dir %>
 
 ## Extract tarball
-tar -xvzf  "${twlight_restore_file}" -C "${twlight_root_dir}" --no-overwrite-dir
+tar -xvzf  "${restore_file}" -C "${root_dir}" --no-overwrite-dir
 
 ## Import DB
-${twlight_root_dir}/bin/twlight_mysqlimport.sh ${twlight_root_dir}/twlight.sql
+${root_dir}/bin/twlight_mysqlimport.sh ${root_dir}/twlight.sql
 
 ## Don't leave an extra DB dump laying out.
-rm -f "${twlight_root_dir}/twlight.sql"
+rm -f "${root_dir}/twlight.sql"
 
 ## Set perms
-chown -R <%= @twlight_unixname %> "${twlight_root_dir}"
-find "${twlight_root_dir}/media" -type f | xargs chmod 644
+chown -R <%= @unixname %> "${root_dir}"
+find "${root_dir}/media" -type f | xargs chmod 644
 
 echo "Finished TWLight restore."

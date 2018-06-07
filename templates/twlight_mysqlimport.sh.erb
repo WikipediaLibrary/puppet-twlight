@@ -6,15 +6,15 @@ fi
 
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-twlight_mysqlimport_file=${1}
-twlight_mysqlhost=localhost
-twlight_mysqldb=twlight
-twlight_mysqluser=twlight
-twlight_mysqlpass=$(cat <%= @twlight_root_dir %>/TWLight/settings/local_vars.py | grep ^MYSQL_PASSWORD | cut -d "=" -f 2 | xargs)
+mysqlimport_file=${1}
+mysqlhost=localhost
+mysqldb=twlight
+mysqluser=twlight
+mysqlpass=$(cat <%= @root_dir %>/TWLight/settings/local_vars.py | grep ^MYSQL_PASSWORD | cut -d "=" -f 2 | xargs)
 
 echo "Importing TWLight database"
 
 ## Perform mysql import
-bash -c "mysql  -h '${twlight_mysqlhost}' -u '${twlight_mysqluser}' -p'${twlight_mysqlpass}' -D '${twlight_mysqldb}' < '${twlight_mysqlimport_file}'"
+bash -c "mysql  -h '${mysqlhost}' -u '${mysqluser}' -p'${mysqlpass}' -D '${mysqldb}' < '${mysqlimport_file}'"
 
 echo "Finished importing TWLight database."

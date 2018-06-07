@@ -1,22 +1,22 @@
 upstream appserver {
-    server unix:<%= @twlight_root_dir %>/run/gunicorn.sock fail_timeout=0;
+    server unix:<%= @root_dir %>/run/gunicorn.sock fail_timeout=0;
 }
 
 server {
-    listen <%= @twlight_serverport %>;
-    listen [::]:<%= @twlight_serverport %>;
-    server_name <%= @twlight_servername %>;
-    root <%= @twlight_root_dir %>/;
+    listen <%= @serverport %>;
+    listen [::]:<%= @serverport %>;
+    server_name <%= @servername %>;
+    root <%= @root_dir %>/;
     client_max_body_size 4G;
-<% if @twlight_environment != 'local' %>
+<% if @environment != 'local' %>
     proxy_intercept_errors on;
 <% end %>
     location /500-dog.jpeg {
-        root <%= @twlight_root_dir %>/TWLight/templates/500/;
+        root <%= @root_dir %>/TWLight/templates/500/;
     }
 
     location /500-Wikipedia_Library_owl.svg {
-        root <%= @twlight_root_dir %>/TWLight/templates/500/;
+        root <%= @root_dir %>/TWLight/templates/500/;
     }
 
     location ~ .+/((500-Wikipedia_Library_owl\.svg)|(500-dog\.jpeg))$ {
@@ -26,23 +26,23 @@ server {
     error_page 500 502 503 504 /500.html;
     location /500.html {
         internal;
-        root <%= @twlight_root_dir %>/TWLight/templates/500/;
+        root <%= @root_dir %>/TWLight/templates/500/;
     }
 
     location /static/ {
         # checks for static file, if not found proxy to app
-        alias <%= @twlight_root_dir %>/TWLight/collectedstatic/;
+        alias <%= @root_dir %>/TWLight/collectedstatic/;
     }
 
     location /media/ {
         # checks for user-uploaded file, if not found proxy to app
-        alias <%= @twlight_root_dir %>/media/;
+        alias <%= @root_dir %>/media/;
     }
 
     location /admin {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Host $host:<%= @twlight_externalport %>;
+        proxy_set_header X-Forwarded-Host $host:<%= @externalport %>;
         proxy_connect_timeout 300s;
         proxy_read_timeout 300s;
         proxy_redirect off;
