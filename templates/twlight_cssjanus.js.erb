@@ -2,7 +2,7 @@
 
 // Load modules
 var fs = require('fs');
-var cssjanus = require('/home/<%= @twlight_unixname %>/node_modules/cssjanus');
+var cssjanus = require('/home/<%= @unixname %>/node_modules/cssjanus');
 
 // Recursively search directory for files. Cribbed from:
 // https://stackoverflow.com/a/21459809
@@ -26,7 +26,7 @@ var _getAllFilesFromFolder = function(dir) {
 };
 
 // Get all the files from the css dir
-var infiles = _getAllFilesFromFolder('<%= @twlight_root_dir %>/TWLight/static/css');
+var infiles = _getAllFilesFromFolder('<%= @root_dir %>/TWLight/static/css');
 
 // Loop through all the files
 infiles.forEach(function(infile) {

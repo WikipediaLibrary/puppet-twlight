@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
 # Fetch latest code from master.
-cd <%= @twlight_root_dir %>
+cd <%= @root_dir %>
 git checkout .
-git pull origin <%= @twlight_git_revision %>
+git pull origin <%= @git_revision %>
 
 # Update pip dependencies.
-bash <%= @twlight_root_dir %>/bin/virtualenv_pip_update.sh
+bash <%= @root_dir %>/bin/virtualenv_pip_update.sh
 
 # Run migrations.
-bash <%= @twlight_root_dir %>/bin/virtualenv_migrate.sh
+bash <%= @root_dir %>/bin/virtualenv_migrate.sh
 
 # Compile translations.
-bash <%= @twlight_root_dir %>/bin/virtualenv_translate.sh
+bash <%= @root_dir %>/bin/virtualenv_translate.sh
 
 # Process static assets.
-bash <%= @twlight_root_dir %>/bin/virtualenv_clearstatic.sh
+bash <%= @root_dir %>/bin/virtualenv_clearstatic.sh

@@ -1,50 +1,51 @@
 class twlight::configsys inherits twlight {
 
   # Create user to execute virtual environment and gunicorn
-  user { $twlight_unixname:
+  user { $unixname:
     ensure     => present,
     comment    => 'twlight user',
     shell      => '/bin/bash',
     managehome => true,
   }
 
-  # needed since libmariadb-client-lgpl-dev is providing client development files.
-  file { '/usr/bin/mysql_config':
-    ensure => 'link',
-    target => '/usr/bin/mariadb_config',
-  }
-
-  # Delete the database so we can change the block size
+#  # Delete the database so we can change the block size
   tidy { 'mysql_ibdata':
     path    => '/var/lib/mysql',
     recurse => true,
     matches => ['ibdata1','ib_logfile*'],
-    require => Package['mariadb-server'],
-    notify  => Exec['mysql_tidy_restart'],
-    before => Class['::mysql::server'],
-  }
+#    require => Package['mariadb-server'],
+#    notify  => Exec['mysql_tidy_restart'],
+#    before  => File['mysql-config-file'],
+  } ~>
 
   # Restart MySQL after tidy
   exec { 'mysql_tidy_restart':
     command     => '/bin/systemctl restart mysql',
     unless    => '/usr/bin/stat /var/lib/mysql/ibdata1 /var/lib/mysql/ib_logfile*',
-  }
+} ~>
 
   # config mariadb server using another module
   class {'::mysql::server':
     package_manage          => false,
     service_name            => 'mysql',
-    root_password           => $twlight_mysqlroot_pw,
+    root_password           => $mysqlroot_pw,
     remove_default_accounts => true,
-    override_options        => $twlight_mysql_override_options,
-    require                 => Tidy['mysql_ibdata'],
+    override_options        => $mysql_override_options,
+    #require                 => Tidy['mysql_ibdata'],
+    #notify                  => File['/usr/bin/mysql_config'],
     restart                 => false,
-  }
+  } ~>
+
+  # needed since libmariadb-client-lgpl-dev is providing client development files.
+  file { '/usr/bin/mysql_config':
+    ensure  => 'link',
+    target  => '/usr/bin/mariadb_config',
+    #require => Class['::mysql::server'],
+  } ~>
 
   # Load timezone tables into mysql on refresh
   exec { 'mysql_tzinfo':
-    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | /usr/bin/mysql --user root --password=${twlight_mysqlroot_pw} mysql",
-#    require => Class['::mysql::server'],
+    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | /usr/bin/mysql --user root --password=${mysqlroot_pw} mysql",
   }
 
 
@@ -58,10 +59,10 @@ class twlight::configsys inherits twlight {
   # GRANT ALL PRIVILEGES on twlight.* to twlight@'localhost' IDENTIFIED BY '<password>';
   mysql::db { 'twlight':
     user     => 'twlight',
-    password => $twlight_mysqltwlight_pw,
+    password => $mysqltwlight_pw,
     host     => 'localhost',
     grant    => ['ALL'],
-    require => Package['mariadb-client', 'mariadb-server'],
+    #require => Package['mariadb-client', 'mariadb-server'],
   }
 
   # Create twlight test database
@@ -69,10 +70,10 @@ class twlight::configsys inherits twlight {
   # GRANT ALL PRIVILEGES on test_twlight.* to test_twlight@'localhost' IDENTIFIED BY '<password>';
   mysql::db { 'test_twlight':
     user     => 'twlight',
-    password => $twlight_mysqltwlight_pw,
+    password => $mysqltwlight_pw,
     host     => 'localhost',
     grant    => ['ALL'],
-    require => Package['mariadb-client', 'mariadb-server'],
+    #require => Package['mariadb-client', 'mariadb-server'],
   }
 
   # www dir

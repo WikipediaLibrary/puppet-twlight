@@ -1,11 +1,11 @@
 #!/bin/bash
 
 NAME="twlight"
-DJANGODIR=<%= @twlight_root_dir %>/
-SOCKFILE=<%= @twlight_root_dir %>/run/gunicorn.sock
-DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
+DJANGODIR=<%= @root_dir %>/
+SOCKFILE=<%= @root_dir %>/run/gunicorn.sock
+DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @environment %>
 DJANGO_WSGI_MODULE=TWLight.wsgi
-USER=<%= @twlight_unixname %>
+USER=<%= @unixname %>
 # This is configurable: http://docs.gunicorn.org/en/stable/design.html#how-many-workers
 NUM_WORKERS=3
 TIMEOUT=300
@@ -29,4 +29,4 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
   --timeout $TIMEOUT \
   --bind=unix:$SOCKFILE \
   --log-level=debug \
-  --log-file=<%= @twlight_root_dir %>/TWLight/logs/gunicorn.log
+  --log-file=<%= @root_dir %>/TWLight/logs/gunicorn.log

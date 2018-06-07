@@ -16,7 +16,7 @@
 #
 # [*sample_variable*]
 #   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_twlight_servers must be set by the
+#   it has a default. e.g. "The parameter enc_servers must be set by the
 #   External Node Classifier as a comma separated list of hostnames." (Note,
 #   global variables should be avoided in favor of class parameters as
 #   of Puppet 2.6.)
@@ -35,6 +35,7 @@
 #
 # Copyright 2017 Your name here, unless otherwise noted.
 #
+
 class twlight (
   String    $git_repository = $twlight::params::git_repository,
   String    $git_revision = $twlight::params::git_revision,
@@ -65,6 +66,7 @@ class twlight (
   anchor { 'twlight::begin': } ->
   class { '::twlight::repo': } ->
   class { '::twlight::install': } ->
+#  class { '::twlight::tidymariadb': } ->
   class { '::twlight::configsys': } ->
   class { '::twlight::fetch': } ->
   class { '::twlight::configapp': } ->

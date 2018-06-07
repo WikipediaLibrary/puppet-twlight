@@ -2,9 +2,9 @@ class twlight::handler inherits twlight {
 
   # Import Backup if available
   exec { 'mysql_import':
-    command   => "/bin/bash ${twlight_root_dir}/bin/twlight_restore.sh ${twlight_restore_file}",
+    command   => "/bin/bash ${root_dir}/bin/twlight_restore.sh ${restore_file}",
     logoutput => true,
-    onlyif    => "/usr/bin/stat ${twlight_restore_file}",
+    onlyif    => "/usr/bin/stat ${restore_file}",
   }
 
   # Reload nginx
@@ -15,7 +15,7 @@ class twlight::handler inherits twlight {
 
   # Configure virtual environment
   exec { 'virtualenv_update':
-    command => "/bin/bash ${twlight_root_dir}/bin/twlight_update_code.sh",
+    command => "/bin/bash ${root_dir}/bin/twlight_update_code.sh",
   }
 
 }

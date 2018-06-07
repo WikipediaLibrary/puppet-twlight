@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # Make sure www owns the .git tree
-chown -R www:www <%= @twlight_root_dir %>/.git
+chown -R www:www <%= @root_dir %>/.git
 
 # Pull latest git, apply changes to Django
 # If that succeeds, run the test suite
 # If that succeeds, restart Green Unicorn
-sudo su <%= @twlight_unixname %> bash -c "\
-<%= @twlight_root_dir %>/bin/./virtualenv_update.sh >><%= @twlight_root_dir %>/TWLight/logs/update.log 2>&1 &&\
-<%= @twlight_root_dir %>/bin/./virtualenv_test.sh >><%= @twlight_root_dir %>/TWLight/logs/test.log 2>&1" &&\
+sudo su <%= @unixname %> bash -c "\
+<%= @root_dir %>/bin/./virtualenv_update.sh >><%= @root_dir %>/TWLight/logs/update.log 2>&1 &&\
+<%= @root_dir %>/bin/./virtualenv_test.sh >><%= @root_dir %>/TWLight/logs/test.log 2>&1" &&\
 systemctl restart gunicorn

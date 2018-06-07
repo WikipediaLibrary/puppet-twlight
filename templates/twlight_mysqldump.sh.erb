@@ -2,18 +2,18 @@
 
 PATH=/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-twlight_mysqldump_dir=<%= @twlight_mysqldump_dir %>
-twlight_mysqlhost=localhost
-twlight_mysqldb=twlight
-twlight_mysqluser=twlight
-twlight_mysqlpass=$(cat <%= @twlight_root_dir %>/TWLight/settings/local_vars.py | grep ^MYSQL_PASSWORD | cut -d "=" -f 2 | xargs)
+mysqldump_dir=<%= @mysqldump_dir %>
+mysqlhost=localhost
+mysqldb=twlight
+mysqluser=twlight
+mysqlpass=$(cat <%= @root_dir %>/TWLight/settings/local_vars.py | grep ^MYSQL_PASSWORD | cut -d "=" -f 2 | xargs)
 
 echo "Dumping TWLight database"
 
 ## Perform sql-dump
-bash -c "mysqldump -h '${twlight_mysqlhost}' -u '${twlight_mysqluser}' -p'${twlight_mysqlpass}' '${twlight_mysqldb}' > '${twlight_mysqldump_dir}/twlight.sql'"
+bash -c "mysqldump -h '${mysqlhost}' -u '${mysqluser}' -p'${mysqlpass}' '${mysqldb}' > '${mysqldump_dir}/twlight.sql'"
 
 ## Root only
-chmod 0600 "${twlight_mysqldump_dir}/twlight.sql"
+chmod 0600 "${mysqldump_dir}/twlight.sql"
 
 echo "Finished dumping TWLight database."
