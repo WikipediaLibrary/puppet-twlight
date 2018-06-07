@@ -71,3 +71,8 @@ Debian 8 only
 
 ## Development
 
+[twlight_vagrant](https://github.com/WikipediaLibrary/twlight_vagrant) is an adequate environment to develop this module in. Beyond the typical github workflow, you may wish to build the module to publish updates to puppet forge. You'll need to feed all of the right options to the installation of puppet in that environment, like:
+```
+/opt/puppetlabs/bin/puppet module build /vagrant/puppet/modules/twlight --codedir /vagrant/puppet
+```
+
