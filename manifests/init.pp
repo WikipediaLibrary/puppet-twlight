@@ -35,7 +35,27 @@
 #
 # Copyright 2017 Your name here, unless otherwise noted.
 #
+
 class twlight (
+  String    $git_repository,
+  String    $git_revision,
+  String    $root_dir,
+  String    $mysqlroot_pw,
+  String    $mysqltwlight_pw,
+  String    $restore_file,
+  String    $backup_dir,
+  String    $mysqldump_dir,
+  String    $servername,
+  String    $serverport,
+  String    $externalport,
+  String    $environment,
+  String    $unixname,
+  Hash      $mysql_override_options,
+  String    $secretkey,
+  String    $allowedhosts,
+  String    $baseurl,
+  String    $oauth_provider_url,
+
   $package_manage = $twlight::params::package_manage,
   $package_ensure = $twlight::params::package_ensure,
   $package_name = $twlight::params::package_name,
@@ -51,6 +71,7 @@ class twlight (
   anchor { 'twlight::begin': } ->
   class { '::twlight::repo': } ->
   class { '::twlight::install': } ->
+#  class { '::twlight::tidymariadb': } ->
   class { '::twlight::configsys': } ->
   class { '::twlight::fetch': } ->
   class { '::twlight::configapp': } ->
