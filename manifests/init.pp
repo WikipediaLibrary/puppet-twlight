@@ -55,7 +55,7 @@ class twlight (
   String    $allowedhosts = $twlight::params::allowedhosts,
   String    $baseurl = $twlight::params::baseurl,
   String    $oauth_provider_url = $twlight::params::oauth_provider_url,
-  Bool      $package_manage = $twlight::params::package_manage,
+  Boolean   $package_manage = $twlight::params::package_manage,
   String    $package_ensure = $twlight::params::package_ensure,
   Array     $package_name = $twlight::params::package_name,
 ) inherits twlight::params {
