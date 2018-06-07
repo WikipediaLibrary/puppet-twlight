@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Backup database and media files. Leave the rest to version control
-source <%= @twlight_root_dir %>/bin/twlight_backup.sh
+source <%= @root_dir %>/bin/twlight_backup.sh
 
 # Apply the latest code from master
-source <%= @twlight_root_dir %>/bin/twlight_update_code.sh
+source <%= @root_dir %>/bin/twlight_update_code.sh

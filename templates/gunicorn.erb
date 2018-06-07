@@ -11,9 +11,9 @@
 
 # Thanks to https://github.com/fhd/init-script-template.
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:$PATH
-dir="<%= @twlight_root_dir %>/bin/"
+dir="<%= @root_dir %>/bin/"
 cmd="./gunicorn_start.sh"
-user="<%= @twlight_unixname %>"
+user="<%= @unixname %>"
 
 name=`basename $0`
 pid_file="/var/run/$name.pid"

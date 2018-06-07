@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Activate Django virtualenv
-cd /home/<%= @twlight_unixname %>
+cd /home/<%= @unixname %>
 virtualenv TWLight
-source /home/<%= @twlight_unixname %>/TWLight/bin/activate
-export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @twlight_environment %>
-cd <%= @twlight_root_dir %>
+source /home/<%= @unixname %>/TWLight/bin/activate
+export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @environment %>
+cd <%= @root_dir %>

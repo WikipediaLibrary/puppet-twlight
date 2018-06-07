@@ -1,7 +1,7 @@
 class twlight::configsys inherits twlight {
 
   # Create user to execute virtual environment and gunicorn
-  user { $twlight_unixname:
+  user { $unixname:
     ensure     => present,
     comment    => 'twlight user',
     shell      => '/bin/bash',
@@ -28,9 +28,9 @@ class twlight::configsys inherits twlight {
   class {'::mysql::server':
     package_manage          => false,
     service_name            => 'mysql',
-    root_password           => $twlight_mysqlroot_pw,
+    root_password           => $mysqlroot_pw,
     remove_default_accounts => true,
-    override_options        => $twlight_mysql_override_options,
+    override_options        => $mysql_override_options,
     #require                 => Tidy['mysql_ibdata'],
     #notify                  => File['/usr/bin/mysql_config'],
     restart                 => false,
@@ -45,7 +45,7 @@ class twlight::configsys inherits twlight {
 
   # Load timezone tables into mysql on refresh
   exec { 'mysql_tzinfo':
-    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | /usr/bin/mysql --user root --password=${twlight_mysqlroot_pw} mysql",
+    command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | /usr/bin/mysql --user root --password=${mysqlroot_pw} mysql",
   }
 
 
@@ -59,7 +59,7 @@ class twlight::configsys inherits twlight {
   # GRANT ALL PRIVILEGES on twlight.* to twlight@'localhost' IDENTIFIED BY '<password>';
   mysql::db { 'twlight':
     user     => 'twlight',
-    password => $twlight_mysqltwlight_pw,
+    password => $mysqltwlight_pw,
     host     => 'localhost',
     grant    => ['ALL'],
     #require => Package['mariadb-client', 'mariadb-server'],
@@ -70,7 +70,7 @@ class twlight::configsys inherits twlight {
   # GRANT ALL PRIVILEGES on test_twlight.* to test_twlight@'localhost' IDENTIFIED BY '<password>';
   mysql::db { 'test_twlight':
     user     => 'twlight',
-    password => $twlight_mysqltwlight_pw,
+    password => $mysqltwlight_pw,
     host     => 'localhost',
     grant    => ['ALL'],
     #require => Package['mariadb-client', 'mariadb-server'],

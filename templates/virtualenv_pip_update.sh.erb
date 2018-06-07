@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source <%= @twlight_root_dir %>/bin/virtualenv_activate.sh
+source <%= @root_dir %>/bin/virtualenv_activate.sh
 
 # update pip dependencies
-cd /home/<%= @twlight_unixname %>
-pip install -r <%= @twlight_root_dir %>/requirements/wmf.txt
+cd /home/<%= @unixname %>
+pip install -r <%= @root_dir %>/requirements/wmf.txt

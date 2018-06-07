@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Generate right to left css
-node <%= @twlight_root_dir %>/bin/twlight_cssjanus.js
+node <%= @root_dir %>/bin/cssjanus.js
 
 # Load virtual environment
-source <%= @twlight_root_dir %>/bin/virtualenv_activate.sh
+source <%= @root_dir %>/bin/virtualenv_activate.sh
 
 # Ensure collectedstatic dir exists
-mkdir -p <%= @twlight_root_dir %>/TWLight/collectedstatic
+mkdir -p <%= @root_dir %>/TWLight/collectedstatic
 
 # Clear and collect css
 echo "collectstatic --noinput --clear"
