@@ -23,7 +23,6 @@
     {"name":"puppet-nginx","version_requirement":">= 0.6.0 < 2.0.0"}
   ],
   "requirements": [
-      {"name": "pe”, “version_requirement”: “4.x”}
+    {"name": "puppet","version_requirement":">= 4.5.0 < 5.0.0"}
   ]
 }
-
