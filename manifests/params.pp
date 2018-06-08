@@ -13,9 +13,9 @@ class twlight::params {
 
   $root_dir = '/var/www/html/TWLight'
   $mysqldump_dir = '/var/www/html/TWLight'
-  $serverport = '80'
-  $externalport = '80'
-  $environment = 'local'
+  $serverport = lookup('twlight::params::serverport', {value_type => String, default_value => '443'})
+  $externalport = lookup('twlight::params::externalport', {value_type => String, default_value => '443'})
+  $environment = lookup('twlight::params::environment', {value_type => String, default_value => 'production'})
   $unixname = 'www'
   $baseurl = "http://${servername}/"
   $oauth_provider_url = "https://meta.wikimedia.org/w/index.php"
