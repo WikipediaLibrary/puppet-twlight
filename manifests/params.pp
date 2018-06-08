@@ -3,7 +3,7 @@ class twlight::params {
   $git_revision =  lookup('twlight::params::git_revision', {value_type => String, default_value => 'master'})
   $mysqlroot_pw = lookup('twlight::params::mysqlroot_pw', {value_type => String})
   $mysqltwlight_pw = lookup('twlight::params::mysqltwlight_pw', {value_type => String})
-  $restore_file = lookup('twlight::params::restore_file', {value_type => String})
+  $restore_file = lookup('twlight::params::restore_file', {value_type => String, default_value => '/dev/false'})
   $backup_dir = lookup('twlight::params::backup_dir', {value_type => String})
   $servername = lookup('twlight::params::servername', {value_type => String})
   $secretkey = lookup('twlight::params::secretkey', {value_type => String})
