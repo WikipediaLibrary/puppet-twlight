@@ -8,21 +8,20 @@ class twlight::configsys inherits twlight {
     managehome => true,
   }
 
-#  # Delete the database so we can change the block size
-  tidy { 'mysql_ibdata':
-    path    => '/var/lib/mysql',
-    recurse => true,
-    matches => ['ibdata1','ib_logfile*'],
-#    require => Package['mariadb-server'],
-#    notify  => Exec['mysql_tidy_restart'],
-#    before  => File['mysql-config-file'],
-  } ~>
+  # Delete the database so we can change the block size
+  $ib1_files = ['ibdata1', 'ib_logfile0', 'ib_logfile1']
 
-  # Restart MySQL after tidy
-  exec { 'mysql_tidy_restart':
+  $ib1_files.each |String $ib1_file| {
+    File {"/var/lib/mysql/${ib1_file}":
+      ensure  => 'absent',
+      notify => Exec['mysql_restart']
+    }
+  }
+
+  # Restart MySQL service
+  exec { 'mysql_restart':
     command     => '/bin/systemctl restart mysql',
-    unless    => '/usr/bin/stat /var/lib/mysql/ibdata1 /var/lib/mysql/ib_logfile*',
-} ~>
+  }
 
   # config mariadb server using another module
   class {'::mysql::server':
@@ -31,17 +30,14 @@ class twlight::configsys inherits twlight {
     root_password           => $mysqlroot_pw,
     remove_default_accounts => true,
     override_options        => $mysql_override_options,
-    #require                 => Tidy['mysql_ibdata'],
-    #notify                  => File['/usr/bin/mysql_config'],
-    restart                 => false,
-  } ~>
+    require => Package['mariadb-server'],
+  }
 
   # needed since libmariadb-client-lgpl-dev is providing client development files.
   file { '/usr/bin/mysql_config':
     ensure  => 'link',
     target  => '/usr/bin/mariadb_config',
-    #require => Class['::mysql::server'],
-  } ~>
+  }
 
   # Load timezone tables into mysql on refresh
   exec { 'mysql_tzinfo':
