@@ -14,13 +14,7 @@ class twlight::configsys inherits twlight {
   $ib1_files.each |String $ib1_file| {
     File {"/var/lib/mysql/${ib1_file}":
       ensure  => 'absent',
-      notify => Exec['mysql_restart']
     }
-  }
-
-  # Restart MySQL service
-  exec { 'mysql_restart':
-    command     => '/bin/systemctl restart mysql',
   }
 
   # config mariadb server using another module
@@ -30,7 +24,8 @@ class twlight::configsys inherits twlight {
     root_password           => $mysqlroot_pw,
     remove_default_accounts => true,
     override_options        => $mysql_override_options,
-    require => Package['mariadb-server'],
+    restart                 => true,
+    require                 => Package['mariadb-server'],
   }
 
   # needed since libmariadb-client-lgpl-dev is providing client development files.
