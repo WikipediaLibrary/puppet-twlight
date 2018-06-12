@@ -42,15 +42,15 @@ class twlight (
   String    $package_ensure = $twlight::params::package_ensure,
   Array     $package_name = $twlight::params::package_name,
 ) inherits twlight::params {
-
-  contain ::twlight::repo
+  ##include apt
+#  contain ::twlight::repo
   contain ::twlight::install
   contain ::twlight::configsys
   contain ::twlight::fetch
   contain ::twlight::configapp
   contain ::twlight::handler
 
-  Class['::twlight::repo'] ->
+#  Class['::twlight::repo'] ->
   Class['::twlight::install'] ->
   Class['::twlight::configsys'] ->
   Class['::twlight::fetch'] ->

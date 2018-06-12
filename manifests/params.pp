@@ -48,7 +48,7 @@ class twlight::params {
   $default_package_name = [
   'build-essential',
   'gettext',
-  'git',
+#  'git',
   'libmariadb-client-lgpl-dev',
   'mariadb-client',
   'mariadb-server',

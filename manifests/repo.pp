@@ -1,15 +1,16 @@
 class twlight::repo inherits twlight {
+  contain apt
 
   if $twlight::package_manage {
-
     # Make sure apt can communicate via https before adding 3rd party repos
-    package { 'apt-transport-https':
-      ensure  => $package_ensure,
-    }
+    #package { 'apt-transport-https':
+    #  ensure  => $package_ensure,
+    #}
 
     # Add Node.js 8.x repo, pinned one higher than the wiki repos.
     # But not via their provided "curl | sudo bash" mechanism
     # https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+    #class {'::apt::source':
     apt::source { 'nodesource':
       comment  => 'Node.js 8.x repo',
       location => 'https://deb.nodesource.com/node_8.x',
@@ -24,11 +25,11 @@ class twlight::repo inherits twlight {
         'src' => false,
         'deb' => true,
       },
-      require => Package['apt-transport-https'],
+      #require => Package['apt-transport-https'],
     }
 
     # Add official MariaDB repo so that we can get a newer version than Debian provides.
-    apt::source { 'mariadb':
+    ::apt::source { 'mariadb':
       location => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.2/debian',
       release  => $::lsbdistcodename,
       repos    => 'main',
@@ -41,7 +42,7 @@ class twlight::repo inherits twlight {
         src   => false,
         deb   => true,
       },
-      require => Package['apt-transport-https'],
+      #require => Package['apt-transport-https'],
     }
   }
 }
