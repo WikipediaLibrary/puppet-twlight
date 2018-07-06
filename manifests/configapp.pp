@@ -225,6 +225,15 @@ class twlight::configapp inherits twlight {
     mode    => '0755',
   }
 
+  # Failure notification script.
+  file { "${root_dir}/bin/twlight_failure.sh":
+    ensure  => file,
+    content => template('twlight/twlight_failure.sh'),
+    owner   => $unixname,
+    group   => $unixname,
+    mode    => '0755',
+  }
+
   # gunicorn config
   file {'/etc/init.d/gunicorn':
     mode    => '0755',

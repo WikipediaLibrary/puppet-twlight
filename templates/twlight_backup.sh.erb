@@ -6,16 +6,16 @@ dom=$(date -d "$D" '+%d')
 root_dir=<%= @root_dir %>
 
 ## Dump DB
-source ${root_dir}/bin/twlight_mysqldump.sh
+source ${root_dir}/bin/twlight_mysqldump.sh || exit 1
 
 mysqldump_dir=<%= @mysqldump_dir %>
 backup_dir=<%= @backup_dir %>
 echo "Backing up database and media"
 
 ## Perform backup
-tar -czf "${backup_dir}/${dom}.tar.gz" -C "${mysqldump_dir}" "./twlight.sql" -C "${root_dir}" "./media"
+tar -czf "${backup_dir}/${dom}.tar.gz" -C "${mysqldump_dir}" "./twlight.sql" -C "${root_dir}" "./media" || exit 1
 
 ## Root only
-chmod 0600 "${backup_dir}/${dom}.tar.gz"
+chmod 0600 "${backup_dir}/${dom}.tar.gz" || exit 1
 
 echo "Finished TWLight backup."

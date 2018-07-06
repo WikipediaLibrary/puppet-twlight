@@ -4,9 +4,11 @@ source <%= @root_dir %>/bin/virtualenv_activate.sh
 
 # Run migrations
 echo "migrate"
-python manage.py createinitialrevisions
-python manage.py makemigrations
-python manage.py migrate
+# We need to create initial revisions on fresh installs, which fails on
+# existing installs. We're choosing to not care about the exit status.
+python manage.py createinitialrevisions || :
+python manage.py makemigrations || exit 1
+python manage.py migrate || exit 1
 apps=($(python manage.py diffsettings | grep 'TWLIGHT_APPS' | grep -o "'[^']*'" | xargs))
 for path in "${apps[@]}"; do
   # Strip 'TWLight.' from the front of each TWLIGHT_APP
@@ -16,13 +18,13 @@ for path in "${apps[@]}"; do
     continue
   fi
   echo "createinitialrevisions ${app}"
-  python manage.py createinitialrevisions ${app};
+  python manage.py createinitialrevisions ${app} || :
   echo "makemigrations ${app}"
-  python manage.py makemigrations ${app};
+  python manage.py makemigrations ${app} || exit 1
   echo "migrate ${app}"
-  python manage.py migrate ${app};
+  python manage.py migrate ${app} || exit 1
 done
 
 # Sync any translation fields that were missed by migration.
 echo "sync_translation_fields"
-python manage.py sync_translation_fields --noinput
+python manage.py sync_translation_fields --noinput || exit 1

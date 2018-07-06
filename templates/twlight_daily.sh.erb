@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
+backup_cmd="<%= @root_dir %>/bin/./twlight_backup.sh"
+update_cmd="<%= @root_dir %>/bin/./twlight_update_code.sh"
+failure_cmd="<%= @root_dir %>/bin/./twlight_failure.sh"
+
 # Backup database and media files. Leave the rest to version control
-source <%= @root_dir %>/bin/twlight_backup.sh
+$(${backup_cmd}) || $(${failure_cmd}) ${backup_cmd}
 
 # Apply the latest code from master
-source <%= @root_dir %>/bin/twlight_update_code.sh
+$(${update_cmd}) || $(${failure_cmd}) ${update_cmd}

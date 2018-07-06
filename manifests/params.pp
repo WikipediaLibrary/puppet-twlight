@@ -10,7 +10,7 @@ class twlight::params {
   $allowedhosts = lookup('twlight::params::allowedhosts', {value_type => String})
   $oauth_key = lookup('twlight::params::oauth_key', {value_type => String})
   $oauth_secret = lookup('twlight::params::oauth_secret', {value_type => String})
-
+  $error_mailto = lookup('twlight::params::error_mailto', {value_type => String, default_value => 'wikipedialibrary@wikimedia.org'})
   $root_dir = '/var/www/html/TWLight'
   $mysqldump_dir = '/var/www/html/TWLight'
   $serverport = lookup('twlight::params::serverport', {value_type => String, default_value => '443'})

@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
 
+venv_update_cmd="<%= @root_dir %>/bin/./virtualenv_update.sh >><%= @root_dir %>/TWLight/logs/update.log 2>&1"
+venv_test_cmd="<%= @root_dir %>/bin/./virtualenv_test.sh >><%= @root_dir %>/TWLight/logs/test.log 2>&1"
+
 # Make sure www owns the .git tree
 chown -R www:www <%= @root_dir %>/.git
 
 # Pull latest git, apply changes to Django
 # If that succeeds, run the test suite
 # If that succeeds, restart Green Unicorn
-sudo su <%= @unixname %> bash -c "\
-<%= @root_dir %>/bin/./virtualenv_update.sh >><%= @root_dir %>/TWLight/logs/update.log 2>&1 &&\
-<%= @root_dir %>/bin/./virtualenv_test.sh >><%= @root_dir %>/TWLight/logs/test.log 2>&1" &&\
-systemctl restart gunicorn
+
+if sudo su <%= @unixname %> bash -c "$(${venv_update_cmd})"; then
+    if sudo su <%= @unixname %> bash -c "$(${venv_test_cmd})"; then
+        systemctl restart gunicorn || exit 1
+    else
+        exit 1
+    fi
+else
+    exit 1
+fi

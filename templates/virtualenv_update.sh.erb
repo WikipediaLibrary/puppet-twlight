@@ -2,17 +2,17 @@
 
 # Fetch latest code from master.
 cd <%= @root_dir %>
-git checkout .
-git pull origin <%= @git_revision %>
+git checkout . || exit 1
+git pull origin <%= @git_revision %> || exit 1
 
 # Update pip dependencies.
-bash <%= @root_dir %>/bin/virtualenv_pip_update.sh
+bash <%= @root_dir %>/bin/virtualenv_pip_update.sh || exit 1
 
 # Run migrations.
-bash <%= @root_dir %>/bin/virtualenv_migrate.sh
+bash <%= @root_dir %>/bin/virtualenv_migrate.sh || exit 1
 
 # Compile translations.
-bash <%= @root_dir %>/bin/virtualenv_translate.sh
+bash <%= @root_dir %>/bin/virtualenv_translate.sh || exit 1
 
 # Process static assets.
-bash <%= @root_dir %>/bin/virtualenv_clearstatic.sh
+bash <%= @root_dir %>/bin/virtualenv_clearstatic.sh || exit 1
