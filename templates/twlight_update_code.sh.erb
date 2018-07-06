@@ -10,8 +10,8 @@ chown -R www:www <%= @root_dir %>/.git
 # If that succeeds, run the test suite
 # If that succeeds, restart Green Unicorn
 
-if sudo su <%= @unixname %> bash -c "$(${venv_update_cmd})"; then
-    if sudo su <%= @unixname %> bash -c "$(${venv_test_cmd})"; then
+if sudo su <%= @unixname %> bash -c "${venv_update_cmd}"; then
+    if sudo su <%= @unixname %> bash -c "${venv_test_cmd}"; then
         systemctl restart gunicorn || exit 1
     else
         exit 1

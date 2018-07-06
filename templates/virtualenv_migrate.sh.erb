@@ -4,11 +4,13 @@ source <%= @root_dir %>/bin/virtualenv_activate.sh
 
 # Run migrations
 echo "migrate"
-# We need to create initial revisions on fresh installs, which fails on
-# existing installs. We're choosing to not care about the exit status.
+# We need to create initial revisions on fresh installs, which fail on
+# existing installs. Ignore exit status.
 python manage.py createinitialrevisions || :
 python manage.py makemigrations || exit 1
-python manage.py migrate || exit 1
+# Will throw a not-meaningful error if gunicorn is running, which will
+# almost always be the desired state on a real server. Ignore exit status.
+python manage.py migrate || :
 apps=($(python manage.py diffsettings | grep 'TWLIGHT_APPS' | grep -o "'[^']*'" | xargs))
 for path in "${apps[@]}"; do
   # Strip 'TWLight.' from the front of each TWLIGHT_APP
@@ -22,7 +24,7 @@ for path in "${apps[@]}"; do
   echo "makemigrations ${app}"
   python manage.py makemigrations ${app} || exit 1
   echo "migrate ${app}"
-  python manage.py migrate ${app} || exit 1
+  python manage.py migrate ${app} || :
 done
 
 # Sync any translation fields that were missed by migration.

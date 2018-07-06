@@ -2,8 +2,8 @@
 
 # Fetch latest code from master.
 cd <%= @root_dir %>
-git checkout . || exit 1
-git pull origin <%= @git_revision %> || exit 1
+git checkout .
+git pull origin <%= @git_revision %>
 
 # Update pip dependencies.
 bash <%= @root_dir %>/bin/virtualenv_pip_update.sh || exit 1
