@@ -228,7 +228,7 @@ class twlight::configapp inherits twlight {
   # Failure notification script.
   file { "${root_dir}/bin/twlight_failure.sh":
     ensure  => file,
-    content => template('twlight/twlight_failure.sh'),
+    content => template('twlight/twlight_failure.sh.erb'),
     owner   => $unixname,
     group   => $unixname,
     mode    => '0755',
