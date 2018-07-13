@@ -8,9 +8,13 @@ echo "migrate"
 # existing installs. Ignore exit status.
 python manage.py createinitialrevisions || :
 python manage.py makemigrations || exit 1
-# Will throw a not-meaningful error if gunicorn is running, which will
-# almost always be the desired state on a real server. Ignore exit status.
-python manage.py migrate || :
+
+if ! python manage.py migrate; then
+    # Sync any translation fields that were missed by migration.
+    python manage.py sync_translation_fields --noinput || exit 1
+    python manage.py migrate
+fi
+
 apps=($(python manage.py diffsettings | grep 'TWLIGHT_APPS' | grep -o "'[^']*'" | xargs))
 for path in "${apps[@]}"; do
   # Strip 'TWLight.' from the front of each TWLIGHT_APP
@@ -24,7 +28,11 @@ for path in "${apps[@]}"; do
   echo "makemigrations ${app}"
   python manage.py makemigrations ${app} || exit 1
   echo "migrate ${app}"
-  python manage.py migrate ${app} || :
+  if ! python manage.py migrate ${app}; then
+      # Sync any translation fields that were missed by migration.
+      python manage.py sync_translation_fields --noinput || exit 1
+      python manage.py migrate ${app}
+  fi
 done
 
 # Sync any translation fields that were missed by migration.
