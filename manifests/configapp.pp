@@ -103,6 +103,14 @@ class twlight::configapp inherits twlight {
     content => template('twlight/virtualenv_clearstatic.sh.erb'),
   }
 
+  # Virtualenv example data script
+  file { "${root_dir}/bin/virtualenv_example_data.sh":
+    mode    => '0755',
+    owner   => $unixname,
+    group   => $unixname,
+    content => template('twlight/virtualenv_example_data.sh.erb'),
+  }
+
   # Virtualenv migrate script
   file { "${root_dir}/bin/virtualenv_migrate.sh":
     mode    => '0755',
