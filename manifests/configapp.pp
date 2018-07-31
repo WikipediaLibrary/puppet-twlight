@@ -159,14 +159,6 @@ class twlight::configapp inherits twlight {
     content => template('twlight/twlight_daily.sh.erb'),
   }
 
-  # Weekly task wrapper script
-  file { "${root_dir}/bin/twlight_weekly.sh":
-    owner   => $unixname,
-    group   => $unixname,
-    mode    => '0755',
-    content => template('twlight/twlight_weekly.sh.erb'),
-  }
-
   # Backup script
   file { "${root_dir}/bin/twlight_backup.sh":
     owner   => $unixname,

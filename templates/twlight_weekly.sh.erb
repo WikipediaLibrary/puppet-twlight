@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-<% if @environment == 'production' %>
-
-reminder_cmd="<%= @root_dir %>/bin/./virtualenv_send_coordinator_reminders.sh"
-failure_cmd="<%= @root_dir %>/bin/./twlight_failure.sh"
-
-# Send weekly reminders to coordinators.
-sudo su <%= @unixname %> bash -c "${reminder_cmd}" || ${failure_cmd} "${reminder_cmd}"
-<% end %>
