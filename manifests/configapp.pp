@@ -121,9 +121,9 @@ class twlight::configapp inherits twlight {
     }
 
     # daily cron task
-    file { '/etc/cron.daily/twlight':
+    file { '/etc/cron.hourly/twlight':
       ensure => 'link',
-      target => "${root_dir}/bin/twlight_daily.sh",
+      target => "${root_dir}/bin/twlight_deploy.sh",
       force  => true,
     }
 
