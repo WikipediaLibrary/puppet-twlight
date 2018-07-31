@@ -87,12 +87,12 @@ class twlight::configapp inherits twlight {
     mode    => '0400',
   }
 
-  # Virtualenv activate script
-  file { "${root_dir}/bin/virtualenv_activate.sh":
-    mode    => '0755',
-    owner   => $unixname,
-    group   => $unixname,
-    content => template('twlight/virtualenv_activate.sh.erb'),
+  # Global environment variables.
+  file { '/etc/profile.d/twlight_global_env.sh':
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    content => template('twlight/twlight_global_env.sh.erb'),
   }
 
   # Virtualenv clear static script
