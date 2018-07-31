@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-source <%= @root_dir %>/bin/virtualenv_activate.sh
-
-# update pip dependencies
-cd /home/<%= @unixname %>
-pip install -r <%= @root_dir %>/requirements/wmf.txt

@@ -1,6 +1,10 @@
 # Add TWLight global environment variables.
 
 export TWLIGHT_HOME=<%= @root_dir %>
+export TWLIGHT_DUMP_DIR=<%= @dump_dir %>
+export TWLIGHT_MYSQLDUMP_DIR=<%= @mysqldump_dir %>
+export TWLIGHT_BACKUP_DIR=<%= @backup_dir %>
 export TWLIGHT_ENV=<%= @environment %>
 export TWLIGHT_UNIXNAME=<%= @unixname %>
+export TWLIGHT_ERROR_MAILTO=<%= @error_mailto %>
 export DJANGO_SETTINGS_MODULE=TWLight.settings.<%= @environment %>
