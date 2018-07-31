@@ -88,11 +88,11 @@ class twlight::configapp inherits twlight {
   }
 
   # Global environment variables.
-  file { '/etc/profile.d/twlight_global_env.sh':
+  file { '/etc/environment':
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => template('twlight/twlight_global_env.sh.erb'),
+    content => template('twlight/environment.erb'),
   }
 
   # gunicorn config
