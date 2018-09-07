@@ -28,13 +28,18 @@ class twlight::repo inherits twlight {
     }
 
     # Add official MariaDB repo so that we can get a newer version than Debian provides.
+    # To get the key ID, use the mariadb repository configuration tool:
+    # https://downloads.mariadb.org/mariadb/repositories/#mirror=digitalocean-sfo&distro=Debian&distro_release=stretch--stretch&version=10.2
+    # Grab the hex-formatted keyid from the instructions, and then search for the fingerprint:
+    # https://keyserver.ubuntu.com/pks/lookup?search=INSERTAREALKEYIDHERE&fingerprint=on&op=vindex
+
     apt::source { 'mariadb':
       location => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.2/debian',
       release  => $::lsbdistcodename,
       repos    => 'main',
       pin      => '1002',
       key      => {
-        id     => '199369E5404BD5FC7D2FE43BCBCB082A1BB943DB',
+        id     => '177F4010FE56CA3336300305F1656F24C74CD1D8',
         server => 'hkp://keyserver.ubuntu.com:80',
       },
       include => {

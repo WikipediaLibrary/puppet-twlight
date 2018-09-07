@@ -49,7 +49,7 @@ class twlight::params {
   'build-essential',
   'gettext',
   'git',
-  'libmariadb-client-lgpl-dev',
+  'libmariadb-dev',
   'mariadb-client',
   'mariadb-server',
   'nginx',
