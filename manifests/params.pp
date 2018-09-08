@@ -50,6 +50,7 @@ class twlight::params {
   'gettext',
   'git',
   'libmariadb-dev',
+  'libssl-dev',
   'mariadb-client',
   'mariadb-server',
   'nginx',

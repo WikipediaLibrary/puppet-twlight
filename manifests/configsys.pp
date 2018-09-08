@@ -17,28 +17,59 @@ class twlight::configsys inherits twlight {
     }
   }
 
+  # mysql service definition only required to because
+  # we're using systemd-based containers.
+  #service { 'mysql':
+  #  start                   => '/bin/systemctl start',
+  #  stop                    => '/bin/systemctl stop',
+  #  restart                 => '/bin/systemctl restart',
+  #  status                  => '/bin/systemctl status',
+  #  hasrestart              => true,
+  #  ensure                  => 'running',
+  #}
+
+  # Reload systemctl service config before trying to manage mysql service.
+  exec { 'systemctl_start_mysql':
+    command     => "/bin/systemctl start mysql",
+    require     => Package['mariadb-server'],
+  }
+
   # config mariadb server using another module
   class {'::mysql::server':
     package_manage          => false,
+    service_manage          => false,
     service_name            => 'mysql',
     root_password           => $mysqlroot_pw,
     remove_default_accounts => true,
     override_options        => $mysql_override_options,
-    restart                 => true,
-    require                 => Package['mariadb-server'],
+    restart                 => false,
+    require                 => Exec['systemctl_start_mysql'],
+    notify                  => Exec['systemctl_restart_mysql'],
+  }
+
+  # Reload systemctl service config before trying to manage mysql service.
+  exec { 'systemctl_restart_mysql':
+    command     => "/bin/systemctl restart mysql",
   }
 
   # needed since libmariadb-client-lgpl-dev is providing client development files.
-  file { '/usr/bin/mysql_config':
-    ensure  => 'link',
-    target  => '/usr/bin/mariadb_config',
+  #file { '/usr/bin/mysql_config':
+  #  ensure  => 'link',
+  #  target  => '/usr/bin/mariadb_config',
+  #}
+
+  # needed since MYSQL-python has issues with libmariadb-dev
+  # https://github.com/DefectDojo/django-DefectDojo/issues/407
+  exec { 'hack_libmariadb_dev':
+    command     => "/bin/sed '/st_mysql_options options;/a unsigned int reconnect;' /usr/include/mysql/mysql.h -i.bkp",
+    require     => Package['libmariadb-dev'],
   }
 
   # Load timezone tables into mysql on refresh
   exec { 'mysql_tzinfo':
     command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | /usr/bin/mysql --user root --password=${mysqlroot_pw} mysql",
+    require     => Exec['systemctl_restart_mysql'],
   }
-
 
   class {'::mysql::client':
     package_manage          => false,
