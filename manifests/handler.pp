@@ -11,6 +11,7 @@ class twlight::handler inherits twlight {
   exec { 'nginx_reload':
     command     => '/usr/sbin/nginx -t && /bin/systemctl reload nginx',
     refreshonly => true,
+    require     => Service['nginx'],
   }
 
   # Configure virtual environment

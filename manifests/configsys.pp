@@ -17,39 +17,15 @@ class twlight::configsys inherits twlight {
     }
   }
 
-  # mysql service definition only required to because
-  # we're using systemd-based containers.
-  #service { 'mysql':
-  #  start                   => '/bin/systemctl start',
-  #  stop                    => '/bin/systemctl stop',
-  #  restart                 => '/bin/systemctl restart',
-  #  status                  => '/bin/systemctl status',
-  #  hasrestart              => true,
-  #  ensure                  => 'running',
-  #}
-
-  # Reload systemctl service config before trying to manage mysql service.
-  exec { 'systemctl_start_mysql':
-    command     => "/bin/systemctl start mysql",
-    require     => Package['mariadb-server'],
-  }
-
   # config mariadb server using another module
   class {'::mysql::server':
     package_manage          => false,
-    service_manage          => false,
     service_name            => 'mysql',
     root_password           => $mysqlroot_pw,
     remove_default_accounts => true,
     override_options        => $mysql_override_options,
-    restart                 => false,
-    require                 => Exec['systemctl_start_mysql'],
-    notify                  => Exec['systemctl_restart_mysql'],
-  }
-
-  # Reload systemctl service config before trying to manage mysql service.
-  exec { 'systemctl_restart_mysql':
-    command     => "/bin/systemctl restart mysql",
+    restart                 => true,
+    require     => Package['mariadb-server'],
   }
 
   # needed since libmariadb-client-lgpl-dev is providing client development files.
@@ -68,7 +44,6 @@ class twlight::configsys inherits twlight {
   # Load timezone tables into mysql on refresh
   exec { 'mysql_tzinfo':
     command     => "/usr/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | /usr/bin/mysql --user root --password=${mysqlroot_pw} mysql",
-    require     => Exec['systemctl_restart_mysql'],
   }
 
   class {'::mysql::client':
@@ -127,5 +102,10 @@ class twlight::configsys inherits twlight {
   file {'/etc/nginx/sites-enabled/default':
     ensure => 'absent',
     notify => Exec['nginx_reload']
+  }
+
+  # nginx is running
+  service { 'nginx':
+    ensure => 'running',
   }
 }
