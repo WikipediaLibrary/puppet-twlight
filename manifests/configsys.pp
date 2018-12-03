@@ -25,20 +25,26 @@ class twlight::configsys inherits twlight {
     remove_default_accounts => true,
     override_options        => $mysql_override_options,
     restart                 => true,
-    require     => Package['mariadb-server'],
+    require                 => Package['mariadb-server'],
   }
 
-  # needed since libmariadb-client-lgpl-dev is providing client development files.
-  #file { '/usr/bin/mysql_config':
-  #  ensure  => 'link',
-  #  target  => '/usr/bin/mariadb_config',
-  #}
-
-  # needed since MYSQL-python has issues with libmariadb-dev
-  # https://github.com/DefectDojo/django-DefectDojo/issues/407
-  exec { 'hack_libmariadb_dev':
-    command     => "/bin/sed '/st_mysql_options options;/a unsigned int reconnect;' /usr/include/mysql/mysql.h -i.bkp",
-    require     => Package['libmariadb-dev'],
+  case $operatingsystemrelease {
+    /^8.*/: {
+      # needed since libmariadb-client-lgpl-dev is providing client development files.
+      file { '/usr/bin/mysql_config':
+        ensure  => 'link',
+        target  => '/usr/bin/mariadb_config',
+        require => Package['libmariadb-client-lgpl-dev'],
+      }
+    }
+    /^9.*/: {
+      # needed since MYSQL-python has issues with libmariadb-dev
+      # https://github.com/DefectDojo/django-DefectDojo/issues/407
+      exec { 'hack_libmariadb_dev':
+        command     => "/bin/sed '/st_mysql_options options;/a unsigned int reconnect;' /usr/include/mysql/mysql.h -i.bkp",
+        require     => Package['libmariadb-dev'],
+      }
+    }
   }
 
   # Load timezone tables into mysql on refresh
