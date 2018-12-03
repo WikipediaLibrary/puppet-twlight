@@ -47,20 +47,40 @@ class twlight::params {
   $package_manage = true
   $package_ensure = 'present'
 
-  $default_package_name = [
-  'build-essential',
-  'gettext',
-  'git',
-  'libmariadb-dev',
-  'libssl-dev',
-  'mariadb-client',
-  'mariadb-server',
-  'nginx',
-  'nodejs',
-  'pandoc',
-  'python-dev',
-  'python-pip',
-  ]
+  case $operatingsystemrelease {
+    /^8.*/: {
+      $default_package_name = [
+        'build-essential',
+        'gettext',
+        'git',
+        'libmariadb-client-lgpl-dev',
+        'libssl-dev',
+        'mariadb-client',
+        'mariadb-server',
+        'nginx',
+        'nodejs',
+        'pandoc',
+        'python-dev',
+        'python-pip',
+      ]
+    }
+    /^9.*/: {
+      $default_package_name = [
+        'build-essential',
+        'gettext',
+        'git',
+        'libmariadb-dev',
+        'libssl-dev',
+        'mariadb-client',
+        'mariadb-server',
+        'nginx',
+        'nodejs',
+        'pandoc',
+        'python-dev',
+        'python-pip',
+      ]
+    }
+}
 
   case $::osfamily {
     'Debian': {

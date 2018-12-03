@@ -1,6 +1,6 @@
 {
   "name": "jsnshrmn-twlight",
-  "version": "0.5.4",
+  "version": "0.5.6",
   "author": "jsnshrmn",
   "summary": "Puppet TWLight management module.",
   "license": "Apache-2.0",
@@ -11,7 +11,7 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "8"
+        "8", "9"
       ]
     }
   ],
