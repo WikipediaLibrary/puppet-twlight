@@ -18,8 +18,6 @@ class twlight::params {
   $environment = lookup('twlight::params::environment', {value_type => String, default_value => 'production'})
   $unixname = 'www'
   $baseurl = "http://${servername}/"
-  $matomo_hostname = lookup('twlight::params::matomo_hostname', {value_type => String, default_value => 'None'})
-  $matomo_site_id = lookup('twlight::params::matomo_site_id', {value_type => String, default_value => 'None'})
   $oauth_provider_url = "https://meta.wikimedia.org/w/index.php"
   $mysql_override_options = {
     'client' => {
