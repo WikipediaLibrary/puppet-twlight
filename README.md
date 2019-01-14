@@ -67,7 +67,7 @@ puppet apply some-manifest.pp
 
 ## Limitations
 
-Debian 8 only
+Debian 8,9 only
 
 ## Development
 
