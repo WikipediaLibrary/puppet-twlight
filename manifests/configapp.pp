@@ -120,11 +120,20 @@ class twlight::configapp inherits twlight {
       force  => true,
     }
 
-    # daily cron task
-    file { '/etc/cron.hourly/twlight':
-      ensure => 'link',
-      target => "${root_dir}/bin/twlight_deploy.sh",
-      force  => true,
+    # cron deploy task
+    file { '/etc/cron.d/twlight':
+      mode   => '0644',
+      owner  => '0',
+      group  => '0',
+      source => 'puppet:///modules/twlight/deploy.cron',
+    }
+
+    # cron backup task
+    file {'/etc/cron.daily/twlight':
+      mode   => '0644',
+      owner  => '33',
+      group  => '33',
+      source => 'puppet:///modules/twlight/backup.cron',
     }
 
   }
