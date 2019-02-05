@@ -16,7 +16,7 @@ class twlight::params {
   $serverport = lookup('twlight::params::serverport', {value_type => String, default_value => '443'})
   $externalport = lookup('twlight::params::externalport', {value_type => String, default_value => '443'})
   $environment = lookup('twlight::params::environment', {value_type => String, default_value => 'production'})
-  $unixname = 'www'
+  $unixname = lookup('twlight::params::unixname', {value_type => String, default_value => 'www'})
   $baseurl = "http://${servername}/"
   $oauth_provider_url = "https://meta.wikimedia.org/w/index.php"
   $mysql_override_options = {
