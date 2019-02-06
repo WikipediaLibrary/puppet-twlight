@@ -37,14 +37,6 @@ class twlight::configsys inherits twlight {
         require => Package['libmariadb-client-lgpl-dev'],
       }
     }
-    /^9.*/: {
-      # needed since MYSQL-python has issues with libmariadb-dev
-      # https://github.com/DefectDojo/django-DefectDojo/issues/407
-      exec { 'hack_libmariadb_dev':
-        command     => "/bin/sed '/st_mysql_options options;/a unsigned int reconnect;' /usr/include/mysql/mysql.h -i.bkp",
-        require     => Package['libmariadb-dev'],
-      }
-    }
   }
 
   # Load timezone tables into mysql on refresh
