@@ -1,5 +1,6 @@
-# twlight_puppet
-
+# twlight_puppet (Deprecated)
+The [Library Card Platform for The Wikipedia Library](https://github.com/WikipediaLibrary/TWLight) now uses Docker Swarm to manage deployment; much of the configuration is reduced to environment variables and secrets which are handled by Swarm rather than puppet.
+ 
 #### Table of Contents
 
 1. [Overview](#overview)
